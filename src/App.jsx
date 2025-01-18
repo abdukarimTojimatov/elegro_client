@@ -4,7 +4,13 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import TransactionPage from "./pages/TransactionPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import ExpensesPage from "./pages/ExpensesPage";
+import IncomesPage from "./pages/IncomesPage";
+import OrdersPage from "./pages/OrdersPage";
+import OneOrderPage from "./pages/OneOrderPage";
+
 import Header from "./components/ui/Header";
+import Navbar from "./components/Navbar";
 import { useQuery } from "@apollo/client";
 import { GET_AUTHENTICATED_USER } from "./graphql/queries/user.query";
 import { Toaster } from "react-hot-toast";
@@ -16,7 +22,12 @@ function App() {
 
   return (
     <>
-      {data?.authUser && <Header />}
+      {data?.authUser && (
+        <>
+          <Header />
+          <Navbar />
+        </>
+      )}
       <Routes>
         <Route
           path="/"
@@ -35,6 +46,22 @@ function App() {
           element={
             data?.authUser ? <TransactionPage /> : <Navigate to="/login" />
           }
+        />
+        <Route
+          path="/expenses"
+          element={data?.authUser ? <ExpensesPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/incomes"
+          element={data?.authUser ? <IncomesPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/orders"
+          element={data?.authUser ? <OrdersPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/orders/:id"
+          element={data?.authUser ? <OneOrderPage /> : <Navigate to="/login" />}
         />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
