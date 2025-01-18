@@ -4,9 +4,9 @@
 set -e
 
 # PRODUCTION
-git checkout main
+git checkout master
 git reset --hard
-git pull origin main
+git pull origin master
 
 # Ensure yarn is installed globally
 npm install -g yarn
@@ -19,7 +19,7 @@ yarn install
 npm run build
 
 # Start the project with PM2
-pm2 start "yarn run start:prod" --name=fabricClient
+pm2 start "npm run dev:prod" --name=fabricClient
 
 # Synchronize PM2 process list
 pm2 save
