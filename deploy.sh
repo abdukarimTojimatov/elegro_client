@@ -9,11 +9,9 @@ git reset --hard
 git pull origin master
 
 # Ensure yarn is installed globally
-npm install -g yarn
-npm global add serve
 
-# Install dependencies
-yarn install
+npm install -g serve
+
 
 # Build the project
 npm run build
