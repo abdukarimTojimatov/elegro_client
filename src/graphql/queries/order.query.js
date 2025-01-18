@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_ORDERS = gql`
-  query GetOrders {
+  query Orders {
     orders {
       _id
       userId
@@ -19,14 +19,18 @@ export const GET_ORDERS = gql`
       orderTotalDebt
       orderExpensesDescription
       orderLocation
-      orderPayments
       date
+      orderPayments {
+        paymentType
+        amount
+        date
+      }
     }
   }
 `;
 
 export const GET_ORDER = gql`
-  query GetOrder($id: id!) {
+  query Order($id: id!) {
     order(id: $id) {
       _id
       userId
@@ -44,7 +48,11 @@ export const GET_ORDER = gql`
       orderTotalDebt
       orderExpensesDescription
       orderLocation
-      orderPayments
+      orderPayments {
+        paymentType
+        amount
+        date
+      }
       date
     }
   }

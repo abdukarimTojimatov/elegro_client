@@ -1,17 +1,23 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
 import { GET_ORDERS } from "../graphql/queries/order.query";
+import { truncateText } from "../utils/formatDate";
+import { FaLocationDot } from "react-icons/fa6";
 
 const OrdersCards = () => {
-  const { loading, data } = useQuery(GET_ORDERS);
+  const { loading, error, data } = useQuery(GET_ORDERS);
   console.log("data", data);
-
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[200px]">
         <div className="w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
+  }
+
+  if (error) {
+    console.error("Error fetching orders:", error);
+    return <div>Error fetching orders. Please try again later.</div>;
   }
 
   if (!data?.orders?.length) {
@@ -25,13 +31,11 @@ const OrdersCards = () => {
   const getPaymentStatusColor = (status) => {
     switch (status.toLowerCase()) {
       case "paid":
-        return "bg-green-500";
-      case "partially_paid":
-        return "bg-yellow-500";
+        return "bg-gradient-to-r from-green-700 to-green-500";
+      case "partiallypaid":
+        return "bg-gradient-to-r from-pink-800 to-pink-600";
       case "unpaid":
-        return "bg-red-500";
-      default:
-        return "bg-gray-500";
+        return "bg-gradient-to-r from-blue-700 to-blue-500";
     }
   };
 
@@ -40,24 +44,22 @@ const OrdersCards = () => {
       {data.orders.map((order) => (
         <div
           key={order._id}
-          className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
+          className={`${getPaymentStatusColor(
+            order.orderPaymentStatus
+          )} bg-black rounded-lg shadow-md hover:shadow-lg transition-shadow p-4`}
         >
-          <div className="flex items-center justify-between pb-2 border-b">
-            <h3 className="text-sm font-medium">
-              #{order.orderAutoNumber} - {order.orderName}
-            </h3>
-            <span
-              className={`${getPaymentStatusColor(
-                order.orderPaymentStatus
-              )} text-white text-xs px-2 py-1 rounded-full`}
-            >
-              {order.orderPaymentStatus}
-            </span>
-          </div>
           <div className="mt-3 space-y-2">
             <div className="text-sm">
+              <span className="font-semibold">orderAutoNumber: </span>
+              {order.orderAutoNumber}
+            </div>
+            <div className="text-sm">
               <span className="font-semibold">Customer: </span>
-              {order.orderCustomerName}
+              {truncateText(order.orderName, 30)}
+            </div>
+            <div className="text-sm">
+              <span className="font-semibold">OrderName: </span>
+              {truncateText(order.orderCustomerName, 15)}
             </div>
             <div className="text-sm">
               <span className="font-semibold">Phone: </span>
@@ -68,24 +70,28 @@ const OrdersCards = () => {
               {order.orderCategory}
             </div>
             <div className="text-sm">
+              <span className="font-semibold">OrderType: </span>
+              {order.orderType}
+            </div>
+            <div className="text-sm">
               <span className="font-semibold">Location: </span>
               {order.orderLocation}
             </div>
             <div className="grid grid-cols-2 gap-2 mt-2">
               <div className="text-sm">
-                <span className="font-semibold">Total: </span>$
+                <span className="font-semibold">Total: </span>
                 {order.orderTotalAmount}
               </div>
-              <div className="text-sm">
-                <span className="font-semibold">Paid: </span>$
+              <div className="text-sm pl-8">
+                <span className="font-semibold">Paid: </span>
                 {order.orderTotalPaid}
               </div>
               <div className="text-sm">
-                <span className="font-semibold">Expenses: </span>$
-                {order.orderExpensesAmount}
+                <span className="font-semibold">Expenses: </span>
+                {order?.orderExpensesAmount}
               </div>
-              <div className="text-sm">
-                <span className="font-semibold">Debt: </span>$
+              <div className="text-sm pl-8">
+                <span className="font-semibold">Debt: </span>
                 {order.orderTotalDebt}
               </div>
             </div>
