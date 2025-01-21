@@ -3,7 +3,7 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-echo "Starting deployment..."
+echo "Starting deployment in development mode..."
 
 # Step 1: Pull the latest code
 echo "Pulling the latest changes from Git..."
@@ -15,28 +15,23 @@ git pull origin master
 echo "Installing dependencies..."
 npm install
 
-# Step 3: Ensure Vite is installed globally (if necessary)
+# Step 3: Check and install Vite globally (if necessary)
 if ! command -v vite &> /dev/null; then
   echo "Vite is not installed globally. Installing..."
   npm install -g vite
 fi
 
-# Step 4: Build the project
+# Step 4: Build the project (Optional if not used in dev mode)
 echo "Building the project..."
-if npm run build; then
-  echo "Build successful!"
-else
-  echo "Build failed, attempting with npx vite build..."
-  npx vite build
-fi
+npm run build
 
-# Step 5: Start the project with PM2
-echo "Starting the application with PM2..."
-pm2 delete fabricClient || true  # Ensure old process is removed
+# Step 5: Start the project with PM2 in development mode
+echo "Starting the application with PM2 in development mode..."
+pm2 delete elegroClient || true  # Ensure old process is removed
 pm2 start "npm run dev" --name=elegroClient
 
 # Step 6: Synchronize PM2 process list
 echo "Saving PM2 process list..."
 pm2 save
 
-echo "Deployment complete!"
+echo "Deployment complete! The application is now running in development mode."
