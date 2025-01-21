@@ -1,3 +1,5 @@
+import React from "react";
+
 const TransactionFormSkeleton = () => {
   return (
     <div className="h-screen max-w-xl mx-auto py-10">
@@ -19,4 +21,3 @@ const TransactionFormSkeleton = () => {
   );
 };
 export default TransactionFormSkeleton;
-

@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useQuery } from "@apollo/client";
 import Card from "./Card";
 import { GET_TRANSACTIONS } from "../graphql/queries/transaction.query";
