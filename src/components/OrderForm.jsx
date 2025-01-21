@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client";
 import { CREATE_ORDER } from "../graphql/mutations/order.mutation"; // Adjust the path as necessary
 import toast from "react-hot-toast";
 
-const OrderForm = () => {
+const OrderForm = ({ onCreateOrder }) => {
   const [orderData, setOrderData] = useState({
     orderName: "",
     orderCustomerName: "",
@@ -12,8 +12,8 @@ const OrderForm = () => {
     orderCategory: "",
     orderType: "",
     orderPaymentStatus: "unpaid", // Default payment status
-    orderTotalAmount: 0,
-    orderExpensesAmount: 0,
+    orderTotalAmount: "",
+    orderExpensesAmount: "",
     orderTotalPaid: 0,
     orderTotalDebt: 0,
     orderExpensesDescription: "",
@@ -22,7 +22,7 @@ const OrderForm = () => {
   });
 
   const [createOrder, { loading }] = useMutation(CREATE_ORDER, {
-    refetchQueries: ["GetOrders"], // Adjust as necessary
+    refetchQueries: ["Orders"], // Adjust as necessary
     onCompleted: () => {
       toast.success("Order created successfully");
       setOrderData({
@@ -60,6 +60,7 @@ const OrderForm = () => {
     e.preventDefault();
     try {
       await createOrder({ variables: { input: orderData } });
+      onCreateOrder();
     } catch (error) {
       console.error("Error creating order:", error);
     }
@@ -76,7 +77,7 @@ const OrderForm = () => {
           className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
           htmlFor="orderName"
         >
-          Order Name
+          Buyurtma nomi
         </label>
         <input
           className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -84,7 +85,7 @@ const OrderForm = () => {
           name="orderName"
           type="text"
           required
-          placeholder="Order Name"
+          placeholder="Buyurtma nomi"
           value={orderData.orderName}
           onChange={handleChange}
         />
@@ -96,7 +97,7 @@ const OrderForm = () => {
           className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
           htmlFor="orderCustomerName"
         >
-          Customer Name
+          Mijoz ismi
         </label>
         <input
           className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -104,7 +105,7 @@ const OrderForm = () => {
           name="orderCustomerName"
           type="text"
           required
-          placeholder="Customer Name"
+          placeholder="Mijoz ismi"
           value={orderData.orderCustomerName}
           onChange={handleChange}
         />
@@ -116,14 +117,14 @@ const OrderForm = () => {
           className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
           htmlFor="orderCustomerPhoneNumber"
         >
-          Customer Phone Number
+          Mijoz telefon raqami
         </label>
         <input
           className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           id="orderCustomerPhoneNumber"
           name="orderCustomerPhoneNumber"
           type="text"
-          placeholder="Customer Phone Number"
+          placeholder="Mijoz telefon raqami"
           value={orderData.orderCustomerPhoneNumber || "+998"} // Set default value
           onChange={handleChange}
           onFocus={(e) => {
@@ -145,7 +146,7 @@ const OrderForm = () => {
           className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
           htmlFor="orderLocation"
         >
-          Location
+          Manzil
         </label>
         <input
           className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -153,7 +154,7 @@ const OrderForm = () => {
           name="orderLocation"
           type="text"
           required
-          placeholder="Location"
+          placeholder="Manzil"
           value={orderData.orderLocation}
           onChange={handleChange}
         />
@@ -165,7 +166,7 @@ const OrderForm = () => {
           className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
           htmlFor="orderCategory"
         >
-          Order Category
+          Buyurtma kategoriya
         </label>
         <select
           className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -176,10 +177,10 @@ const OrderForm = () => {
           onChange={handleChange}
         >
           <option value="">Select Category</option>
-          <option value="kitchen">Kitchen</option>
-          <option value="bedroom">Bedroom</option>
-          <option value="sofa">Sofa</option>
-          <option value="other">Other</option>
+          <option value="kitchen">Oshxona mebel</option>
+          <option value="bedroom">Yotoqxona mebel</option>
+          <option value="sofa">Yumshoq mebel</option>
+          <option value="other">Boshqalar</option>
         </select>
       </div>
 
@@ -189,7 +190,7 @@ const OrderForm = () => {
           className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
           htmlFor="orderType"
         >
-          Order Type
+          Buyurtma turi
         </label>
         <select
           className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -200,9 +201,9 @@ const OrderForm = () => {
           onChange={handleChange}
         >
           <option value="">Select Type</option>
-          <option value="market">Market</option>
-          <option value="order">Order</option>
-          <option value="other">Other</option>
+          <option value="market">Bozor</option>
+          <option value="order">Buyurtma</option>
+          <option value="other">Boshqalar</option>
         </select>
       </div>
 
@@ -212,7 +213,7 @@ const OrderForm = () => {
           className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
           htmlFor="orderTotalAmount"
         >
-          Total Amount
+          Buyurtma summasi
         </label>
         <input
           className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -220,7 +221,7 @@ const OrderForm = () => {
           name="orderTotalAmount"
           type="number" // Change type to number for numeric input
           required
-          placeholder="Total Amount"
+          placeholder="Buyurtma summasi"
           value={orderData.orderTotalAmount}
           onChange={handleChange}
         />
@@ -232,7 +233,7 @@ const OrderForm = () => {
           className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
           htmlFor="orderExpensesAmount"
         >
-          Expenses Amount
+          Harajatlar summasi
         </label>
         <input
           className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -240,7 +241,7 @@ const OrderForm = () => {
           name="orderExpensesAmount"
           type="number" // Change type to number for numeric input
           required
-          placeholder="Expenses Amount"
+          placeholder="Harajatlar summasi"
           value={orderData.orderExpensesAmount}
           onChange={handleChange}
         />
@@ -252,14 +253,14 @@ const OrderForm = () => {
           className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
           htmlFor="orderDescription"
         >
-          Order Description
+          Buyurtma tavsifi
         </label>
         <textarea
           className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           id="orderDescription"
           name="orderDescription"
           required
-          placeholder="Order Description"
+          placeholder="Buyurtma tavsifi"
           value={orderData.orderDescription}
           onChange={handleChange}
           rows={10} // Initial number of rows
@@ -273,14 +274,14 @@ const OrderForm = () => {
           className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
           htmlFor="orderExpensesDescription"
         >
-          Expenses Description
+          Harajatlar tavsifi
         </label>
         <textarea
           className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 resize-none overflow-auto"
           id="orderExpensesDescription"
           name="orderExpensesDescription"
           required
-          placeholder="Expenses Description"
+          placeholder="Harajatlar tavsifi"
           value={orderData.orderExpensesDescription}
           onChange={handleChange}
           rows={10} // Initial number of rows

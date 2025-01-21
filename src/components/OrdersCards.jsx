@@ -3,10 +3,30 @@ import { useQuery } from "@apollo/client";
 import { GET_ORDERS } from "../graphql/queries/order.query";
 import { truncateText } from "../utils/formatDate";
 import { FaLocationDot } from "react-icons/fa6";
+import { FaTrash } from "react-icons/fa";
+import { HiPencilAlt } from "react-icons/hi";
+import { Link } from "react-router-dom";
+import { DELETE_ORDER } from "../graphql/mutations/order.mutation";
+import { useMutation } from "@apollo/client";
+import { toast } from "react-hot-toast";
 
 const OrdersCards = () => {
   const { loading, error, data } = useQuery(GET_ORDERS);
-  console.log("data", data);
+  const [deleteOrder] = useMutation(DELETE_ORDER, {
+    refetchQueries: ["Orders"],
+  });
+  const handleDelete = async (orderId) => {
+    try {
+      await deleteOrder({
+        variables: { orderId },
+      });
+      toast.success("Order deleted successfully");
+    } catch (error) {
+      console.error("Error deleting order:", error);
+      toast.error(error.message);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[200px]">
@@ -50,53 +70,62 @@ const OrdersCards = () => {
         >
           <div className="mt-3 space-y-2">
             <div className="text-sm">
-              <span className="font-semibold">orderAutoNumber: </span>
+              <span className="font-semibold">Buyurtma raqami: </span>
               {order.orderAutoNumber}
+              <div className="text-sm float-right space-x-2 flex items-center">
+                <FaTrash
+                  className={"cursor-pointer"}
+                  onClick={() => handleDelete(order._id)}
+                />
+                <Link to={`/orders/${order._id}`}>
+                  <HiPencilAlt className="cursor-pointer" size={20} />
+                </Link>
+              </div>
             </div>
             <div className="text-sm">
-              <span className="font-semibold">Customer: </span>
+              <span className="font-semibold">Mijoz: </span>
               {truncateText(order.orderName, 30)}
             </div>
             <div className="text-sm">
-              <span className="font-semibold">OrderName: </span>
+              <span className="font-semibold">Buyurtma nomi: </span>
               {truncateText(order.orderCustomerName, 15)}
             </div>
             <div className="text-sm">
-              <span className="font-semibold">Phone: </span>
+              <span className="font-semibold">Telefon raqam: </span>
               {order.orderCustomerPhoneNumber}
             </div>
             <div className="text-sm">
-              <span className="font-semibold">Category: </span>
+              <span className="font-semibold">Kategoriya: </span>
               {order.orderCategory}
             </div>
             <div className="text-sm">
-              <span className="font-semibold">OrderType: </span>
+              <span className="font-semibold">Buyurtma turi: </span>
               {order.orderType}
             </div>
             <div className="text-sm">
-              <span className="font-semibold">Location: </span>
+              <span className="font-semibold">Manzil: </span>
               {order.orderLocation}
             </div>
             <div className="grid grid-cols-2 gap-2 mt-2">
               <div className="text-sm">
-                <span className="font-semibold">Total: </span>
+                <span className="font-semibold">Jami: </span>
                 {order.orderTotalAmount}
               </div>
               <div className="text-sm pl-8">
-                <span className="font-semibold">Paid: </span>
+                <span className="font-semibold">To'landi: </span>
                 {order.orderTotalPaid}
               </div>
               <div className="text-sm">
-                <span className="font-semibold">Expenses: </span>
+                <span className="font-semibold">Xarajatlar: </span>
                 {order?.orderExpensesAmount}
               </div>
               <div className="text-sm pl-8">
-                <span className="font-semibold">Debt: </span>
+                <span className="font-semibold">Qarz: </span>
                 {order.orderTotalDebt}
               </div>
             </div>
             <div className="text-sm mt-2">
-              <span className="font-semibold">Date: </span>
+              <span className="font-semibold">Buyurtma vaqti: </span>
               {new Date(order.date).toLocaleDateString()}
             </div>
           </div>
