@@ -33,7 +33,7 @@ fi
 # Step 5: Start the project with PM2
 echo "Starting the application with PM2..."
 pm2 delete fabricClient || true  # Ensure old process is removed
-pm2 start "npm run dev:prod" --name=elegroClient
+pm2 start "npm run dev" --name=elegroClient
 
 # Step 6: Synchronize PM2 process list
 echo "Saving PM2 process list..."
