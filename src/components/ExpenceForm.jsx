@@ -1,12 +1,12 @@
 import React from "react";
 
 import { useMutation } from "@apollo/client";
-import { CREATE_TRANSACTION } from "../graphql/mutations/transaction.mutation";
+import { CREATE_EXPENCE } from "../graphql/mutations/expence.mutation";
 import toast from "react-hot-toast";
 
-const TransactionForm = () => {
-  const [createTransaction, { loading }] = useMutation(CREATE_TRANSACTION, {
-    refetchQueries: ["GetTransactions", "GetTransactionStatistics"],
+const ExpenceForm = () => {
+  const [createExpence, { loading }] = useMutation(CREATE_EXPENCE, {
+    refetchQueries: ["GetExpencess", "GetExpencesStatistics"],
   });
 
   const handleSubmit = async (e) => {
@@ -15,7 +15,7 @@ const TransactionForm = () => {
     const form = e.target;
     const formData = new FormData(form);
 
-    const transactionData = {
+    const expenceData = {
       description: formData.get("description"),
       paymentType: formData.get("paymentType"),
       category: formData.get("category"),
@@ -25,9 +25,9 @@ const TransactionForm = () => {
     };
 
     try {
-      await createTransaction({ variables: { input: transactionData } });
+      await createExpence({ variables: { input: expenceData } });
       form.reset();
-      toast.success("Transaction created successfully");
+      toast.success("Expence created successfully");
     } catch (error) {
       toast.error(error.message);
     }
@@ -38,14 +38,14 @@ const TransactionForm = () => {
       className="w-full max-w-lg flex flex-col gap-5 px-3"
       onSubmit={handleSubmit}
     >
-      {/* TRANSACTION */}
+      {/* EXPENCES */}
       <div className="flex flex-wrap">
         <div className="w-full">
           <label
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="description"
           >
-            Transaction
+            Expences
           </label>
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -72,8 +72,8 @@ const TransactionForm = () => {
               id="paymentType"
               name="paymentType"
             >
-              <option value={"card"}>Card</option>
-              <option value={"cash"}>Cash</option>
+              <option value={"plastik"}>plastik</option>
+              <option value={"naqd"}>naqd</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
@@ -101,9 +101,13 @@ const TransactionForm = () => {
               id="category"
               name="category"
             >
-              <option value={"saving"}>Saving</option>
-              <option value={"expense"}>Expense</option>
-              <option value={"investment"}>Investment</option>
+              <option value={"Egamberdi"}>Egamberdi</option>
+              <option value={"Elmurod"}>Elmurod</option>
+              <option value={"Rozimuhammad"}>Rozimuhammad</option>
+              <option value={"Laminad"}>Laminad</option>
+              <option value={"Mashina xarajatlari"}>Mashina xarajatlari</option>
+              <option value={"Soliq"}>Soliq</option>
+              <option value={"Elektr"}>Elektr</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
@@ -179,10 +183,10 @@ const TransactionForm = () => {
         type="submit"
         disabled={loading}
       >
-        {loading ? "Loading..." : "Add Transaction"}
+        {loading ? "Loading..." : "Add Expences"}
       </button>
     </form>
   );
 };
 
-export default TransactionForm;
+export default ExpenceForm;

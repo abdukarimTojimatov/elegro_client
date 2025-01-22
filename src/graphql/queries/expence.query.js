@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const GET_TRANSACTIONS = gql`
-  query GetTransactions {
-    transactions {
+export const GET_EXPENCES = gql`
+  query GetExpences {
+    expences {
       _id
       description
       paymentType
@@ -14,9 +14,9 @@ export const GET_TRANSACTIONS = gql`
   }
 `;
 
-export const GET_TRANSACTION = gql`
-  query GetTransaction($id: ID!) {
-    transaction(transactionId: $id) {
+export const GET_EXPENCE = gql`
+  query GetExpence($id: ID!) {
+    expence(expenceId: $id) {
       _id
       description
       paymentType
@@ -33,8 +33,8 @@ export const GET_TRANSACTION = gql`
   }
 `;
 
-export const GET_TRANSACTION_STATISTICS = gql`
-  query GetTransactionStatistics {
+export const GET_EXPENCES_STATISTICS = gql`
+  query GetExpencesStatistics {
     categoryStatistics {
       category
       totalAmount

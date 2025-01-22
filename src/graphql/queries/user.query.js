@@ -11,14 +11,14 @@ export const GET_AUTHENTICATED_USER = gql`
   }
 `;
 
-export const GET_USER_AND_TRANSACTIONS = gql`
-  query GetUserAndTransactions($userId: ID!) {
+export const GET_USER_AND_EXPENCES = gql`
+  query GetUserAndExpences($userId: ID!) {
     user(userId: $userId) {
       _id
       name
       username
       profilePicture
-      transactions {
+      expences {
         _id
         description
         paymentType

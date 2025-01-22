@@ -4,34 +4,34 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  GET_TRANSACTION,
-  GET_TRANSACTION_STATISTICS,
-} from "../graphql/queries/transaction.query";
-import { UPDATE_TRANSACTION } from "../graphql/mutations/transaction.mutation";
+  GET_EXPENCES,
+  GET_EXPENCES_STATISTICS,
+} from "../graphql/queries/expence.query";
+import { UPDATE_EXPENCE } from "../graphql/mutations/expence.mutation";
 import toast from "react-hot-toast";
-import TransactionFormSkeleton from "../skeletons/TransactionFormSkeleton";
+import ExpenceFormSkeleton from "../skeletons/ExpenceFormSkeleton";
 
-const TransactionPage = () => {
+const ExpencePage = () => {
   const { id } = useParams();
-  const { loading, data } = useQuery(GET_TRANSACTION, {
+  const { loading, data } = useQuery(GET_EXPENCES, {
     variables: { id: id },
   });
 
-  const [updateTransaction, { loading: loadingUpdate }] = useMutation(
-    UPDATE_TRANSACTION,
+  const [updateExpence, { loading: loadingUpdate }] = useMutation(
+    UPDATE_EXPENCE,
     {
       // https://github.com/apollographql/apollo-client/issues/5419 => refetchQueries is not working, and here is how we fixed it
-      refetchQueries: [{ query: GET_TRANSACTION_STATISTICS }],
+      refetchQueries: [{ query: GET_EXPENCES_STATISTICS }],
     }
   );
 
   const [formData, setFormData] = useState({
-    description: data?.transaction?.description || "",
-    paymentType: data?.transaction?.paymentType || "",
-    category: data?.transaction?.category || "",
-    amount: data?.transaction?.amount || "",
-    location: data?.transaction?.location || "",
-    date: data?.transaction?.date || "",
+    description: data?.expences?.description || "",
+    paymentType: data?.expences?.paymentType || "",
+    category: data?.expences?.category || "",
+    amount: data?.expences?.amount || "",
+    location: data?.expences?.location || "",
+    date: data?.expences?.date || "",
   });
 
   const handleSubmit = async (e) => {
@@ -40,16 +40,16 @@ const TransactionPage = () => {
     // convert amount to number bc by default it is string
     // and the reason it's coming from an input field
     try {
-      await updateTransaction({
+      await updateExpence({
         variables: {
           input: {
             ...formData,
             amount,
-            transactionId: id,
+            expencesId: id,
           },
         },
       });
-      toast.success("Transaction updated successfully");
+      toast.success("Expences updated successfully");
     } catch (error) {
       toast.error(error.message);
     }
@@ -66,35 +66,35 @@ const TransactionPage = () => {
   useEffect(() => {
     if (data) {
       setFormData({
-        description: data?.transaction?.description,
-        paymentType: data?.transaction?.paymentType,
-        category: data?.transaction?.category,
-        amount: data?.transaction?.amount,
-        location: data?.transaction?.location,
-        date: data?.transaction?.date,
+        description: data?.expences?.description,
+        paymentType: data?.expences?.paymentType,
+        category: data?.expences?.category,
+        amount: data?.expences?.amount,
+        location: data?.expences?.location,
+        date: data?.expences?.date,
       });
     }
   }, [data]);
 
-  if (loading) return <TransactionFormSkeleton />;
+  if (loading) return <ExpenceFormSkeleton />;
 
   return (
     <div className="h-screen max-w-4xl mx-auto flex flex-col items-center">
       <p className="md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gradient-to-r from-pink-600 via-indigo-500 to-pink-400 inline-block text-transparent bg-clip-text">
-        Update this transaction
+        Update this expences
       </p>
       <form
         className="w-full max-w-lg flex flex-col gap-5 px-3 "
         onSubmit={handleSubmit}
       >
-        {/* TRANSACTION */}
+        {/* EXPENCES */}
         <div className="flex flex-wrap">
           <div className="w-full">
             <label
               className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
               htmlFor="description"
             >
-              Transaction
+              Expences
             </label>
             <input
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -124,8 +124,8 @@ const TransactionPage = () => {
                 onChange={handleInputChange}
                 defaultValue={formData.paymentType}
               >
-                <option value={"card"}>Card</option>
-                <option value={"cash"}>Cash</option>
+                <option value={"plastik"}>plastik</option>
+                <option value={"naqd"}>naqd</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                 <svg
@@ -238,10 +238,10 @@ const TransactionPage = () => {
           type="submit"
           disabled={loadingUpdate}
         >
-          {loadingUpdate ? "Updating..." : "Update Transaction"}
+          {loadingUpdate ? "Updating..." : "Update Expences"}
         </button>
       </form>
     </div>
   );
 };
-export default TransactionPage;
+export default ExpencePage;

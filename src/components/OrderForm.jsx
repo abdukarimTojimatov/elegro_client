@@ -11,13 +11,14 @@ const OrderForm = ({ onCreateOrder }) => {
     orderDescription: "",
     orderCategory: "",
     orderType: "",
-    orderPaymentStatus: "unpaid", // Default payment status
+    orderPaymentStatus: "tolanmadi", // Default payment status
     orderTotalAmount: "",
     orderExpensesAmount: "",
     orderTotalPaid: 0,
     orderTotalDebt: 0,
     orderExpensesDescription: "",
     orderLocation: "",
+    orderReadyDate: "",
     orderPayments: [],
   });
 
@@ -32,13 +33,14 @@ const OrderForm = ({ onCreateOrder }) => {
         orderDescription: "",
         orderCategory: "",
         orderType: "",
-        orderPaymentStatus: "unpaid",
+        orderPaymentStatus: "tolanmadi",
         orderTotalAmount: 0,
         orderExpensesAmount: 0,
         orderTotalPaid: 0,
         orderTotalDebt: 0,
         orderExpensesDescription: "",
         orderLocation: "",
+        orderReadyDate: "",
         orderPayments: [], // Reset to default payment object
       });
     },
@@ -166,7 +168,7 @@ const OrderForm = ({ onCreateOrder }) => {
           className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
           htmlFor="orderCategory"
         >
-          Buyurtma kategoriya
+          Buyurtma kategoriyasi
         </label>
         <select
           className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -176,11 +178,11 @@ const OrderForm = ({ onCreateOrder }) => {
           value={orderData.orderCategory}
           onChange={handleChange}
         >
-          <option value="">Select Category</option>
-          <option value="kitchen">Oshxona mebel</option>
-          <option value="bedroom">Yotoqxona mebel</option>
-          <option value="sofa">Yumshoq mebel</option>
-          <option value="other">Boshqalar</option>
+          <option value="">Kategoriyani tanlang</option>
+          <option value="oshxona">Oshxona mebel</option>
+          <option value="yotoqxona">Yotoqxona mebel</option>
+          <option value="yumshoq mebel">Yumshoq mebel</option>
+          <option value="boshqa">Boshqalar</option>
         </select>
       </div>
 
@@ -200,10 +202,10 @@ const OrderForm = ({ onCreateOrder }) => {
           value={orderData.orderType}
           onChange={handleChange}
         >
-          <option value="">Select Type</option>
-          <option value="market">Bozor</option>
-          <option value="order">Buyurtma</option>
-          <option value="other">Boshqalar</option>
+          <option value="">Tanlang</option>
+          <option value="bozor">Bozor</option>
+          <option value="buyurtma">Buyurtma</option>
+          <option value="boshqa">Boshqalar</option>
         </select>
       </div>
 
@@ -219,7 +221,7 @@ const OrderForm = ({ onCreateOrder }) => {
           className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           id="orderTotalAmount"
           name="orderTotalAmount"
-          type="number" // Change type to number for numeric input
+          type="string" // Change type to number for numeric input
           required
           placeholder="Buyurtma summasi"
           value={orderData.orderTotalAmount}
@@ -239,7 +241,7 @@ const OrderForm = ({ onCreateOrder }) => {
           className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           id="orderExpensesAmount"
           name="orderExpensesAmount"
-          type="number" // Change type to number for numeric input
+          type="string" // Change type to number for numeric input
           required
           placeholder="Harajatlar summasi"
           value={orderData.orderExpensesAmount}
@@ -284,11 +286,25 @@ const OrderForm = ({ onCreateOrder }) => {
           placeholder="Harajatlar tavsifi"
           value={orderData.orderExpensesDescription}
           onChange={handleChange}
-          rows={10} // Initial number of rows
+          rows={10}
           style={{ maxHeight: "200px", overflowY: "auto" }} // Set max height and enable vertical scrolling
         />
       </div>
-
+      <div className="flex-1 min-w-[250px]">
+        <label
+          className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
+          htmlFor="orderReadyDate"
+        >
+          Buyurtma yetkazish vaqti
+        </label>
+        <input
+          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          name="orderReadyDate"
+          type="date"
+          value={orderData.orderReadyDate}
+          onChange={handleChange}
+        />
+      </div>
       {/* SUBMIT BUTTON */}
       <button
         className="text-white font-bold w-full rounded px-4 py-2 bg-gradient-to-br from-pink-500 to-pink-500 hover:from-pink-600 hover:to-pink-600"

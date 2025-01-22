@@ -19,6 +19,7 @@ export const GET_ORDERS = gql`
       orderTotalDebt
       orderExpensesDescription
       orderLocation
+      orderReadyDate
       date
       orderPayments {
         paymentType
@@ -30,8 +31,8 @@ export const GET_ORDERS = gql`
 `;
 
 export const GET_ORDER = gql`
-  query Order($id: id!) {
-    order(id: $id) {
+  query Order($orderId: ID!) {
+    order(orderId: $orderId) {
       _id
       userId
       orderAutoNumber
@@ -41,6 +42,7 @@ export const GET_ORDER = gql`
       orderDescription
       orderCategory
       orderType
+      orderReadyDate
       orderPaymentStatus
       orderTotalAmount
       orderExpensesAmount

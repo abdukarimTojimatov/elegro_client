@@ -1,5 +1,4 @@
 import React from "react";
-
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -10,8 +9,9 @@ import toast from "react-hot-toast";
 
 const OneOrderPage = () => {
   const { id } = useParams();
+  console.log("id", id);
   const { loading, data } = useQuery(GET_ORDER, {
-    variables: { id: id },
+    variables: { orderId: id },
   });
 
   const [updateOrder, { loading: loadingUpdate }] = useMutation(UPDATE_ORDER, {
@@ -26,10 +26,10 @@ const OneOrderPage = () => {
     orderCategory: data?.order?.orderCategory || "",
     orderType: data?.order?.orderType || "",
     orderPaymentStatus: data?.order?.orderPaymentStatus || "unpaid",
-    orderTotalAmount: data?.order?.orderTotalAmount || 0,
-    orderExpensesAmount: data?.order?.orderExpensesAmount || 0,
-    orderTotalPaid: data?.order?.orderTotalPaid || 0,
-    orderTotalDebt: data?.order?.orderTotalDebt || 0,
+    orderTotalAmount: data?.order?.orderTotalAmount || "",
+    orderExpensesAmount: data?.order?.orderExpensesAmount || "",
+    orderTotalPaid: data?.order?.orderTotalPaid || "",
+    orderTotalDebt: data?.order?.orderTotalDebt || "",
     orderExpensesDescription: data?.order?.orderExpensesDescription || "",
     orderLocation: data?.order?.orderLocation || "",
     orderPayments: data?.order?.orderPayments || [],
@@ -38,14 +38,29 @@ const OneOrderPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const formattedData = {
+        ...formData,
+        orderTotalAmount: Number(formData.orderTotalAmount),
+        orderExpensesAmount: Number(formData.orderExpensesAmount),
+        orderTotalPaid: Number(formData.orderTotalPaid),
+        orderTotalDebt: Number(formData.orderTotalDebt),
+        orderPayments: formData.orderPayments.map(
+          ({ __typename, ...payment }) => ({
+            ...payment,
+            amount: Number(payment.amount),
+          })
+        ),
+      };
+
       await updateOrder({
         variables: {
           input: {
-            ...formData,
+            ...formattedData,
             orderId: id,
           },
         },
       });
+
       toast.success("Order updated successfully");
     } catch (error) {
       toast.error(error.message);
@@ -54,17 +69,24 @@ const OneOrderPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    const processedValue = e.target.type === "number" ? Number(value) : value;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value,
+      [name]: processedValue,
     }));
   };
 
   const handlePaymentChange = (index, e) => {
     const { name, value } = e.target;
     const updatedPayments = [...formData.orderPayments];
-    updatedPayments[index][name] = value;
-    setFormData({ ...formData, orderPayments: updatedPayments });
+    // Convert amount to number immediately when it's changed
+    updatedPayments[index][name] = name === "amount" ? Number(value) : value;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      orderPayments: updatedPayments,
+    }));
   };
 
   const addPayment = () => {
@@ -103,7 +125,7 @@ const OneOrderPage = () => {
   return (
     <div className="max-w-4xl mx-auto flex flex-col items-center gap-5 px-5 pb-5">
       <p className="md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gradient-to-r from-pink-600 via-indigo-500 to-pink-400 inline-block text-transparent bg-clip-text">
-        Update this order
+        Buyurtmani o'zgartish
       </p>
       <form
         className="w-full max-w-4xl mx-auto flex flex-wrap gap-5 px-5"
@@ -115,7 +137,7 @@ const OneOrderPage = () => {
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="orderName"
           >
-            Order Name
+            Buyurtma nomi
           </label>
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -135,7 +157,7 @@ const OneOrderPage = () => {
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="orderCustomerName"
           >
-            Customer Name
+            Mijoz ismi
           </label>
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -155,7 +177,7 @@ const OneOrderPage = () => {
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="orderCustomerPhoneNumber"
           >
-            Customer Phone Number
+            Mijoz telefon raqami
           </label>
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -168,33 +190,13 @@ const OneOrderPage = () => {
           />
         </div>
 
-        {/* DESCRIPTION */}
-        <div className="flex-1 min-w-[250px]">
-          <label
-            className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
-            htmlFor="orderDescription"
-          >
-            Order Description
-          </label>
-          <input
-            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            id="orderDescription"
-            name="orderDescription"
-            type="text"
-            required
-            placeholder="Order Description"
-            value={formData.orderDescription}
-            onChange={handleInputChange}
-          />
-        </div>
-
         {/* CATEGORY */}
         <div className="flex-1 min-w-[250px]">
           <label
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="orderCategory"
           >
-            Order Category
+            Buyurtma kategoriyasi
           </label>
           <select
             className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -204,11 +206,11 @@ const OneOrderPage = () => {
             value={formData.orderCategory}
             onChange={handleInputChange}
           >
-            <option value="">Select Category</option>
-            <option value="kitchen">Kitchen</option>
-            <option value="bedroom">Bedroom</option>
-            <option value="sofa">Sofa</option>
-            <option value="other">Other</option>
+            <option value="">Kategoriyani tanlang</option>
+            <option value="oshxona">Oshxona mebel</option>
+            <option value="yotoqxona">Yotoqxona mebel</option>
+            <option value="yumshoq mebel">Yumshoq mebel</option>
+            <option value="boshqa">Boshqalar</option>
           </select>
         </div>
 
@@ -218,7 +220,7 @@ const OneOrderPage = () => {
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="orderType"
           >
-            Order Type
+            Buyurtma turi
           </label>
           <select
             className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -228,11 +230,52 @@ const OneOrderPage = () => {
             value={formData.orderType}
             onChange={handleInputChange}
           >
-            <option value="">Select Type</option>
-            <option value="market">Market</option>
-            <option value="order">Order</option>
-            <option value="other">Other</option>
+            <option value="">Tanlang</option>
+            <option value="bozor">Bozor</option>
+            <option value="buyurtma">Buyurtma</option>
+            <option value="boshqa">Boshqalar</option>
           </select>
+        </div>
+
+        {/* DESCRIPTION */}
+        <div className="flex-1 min-w-[250px]">
+          <label
+            className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
+            htmlFor="orderDescription"
+          >
+            Buyurtma tavsifi
+          </label>
+          <textarea
+            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            id="orderDescription"
+            name="orderDescription"
+            required
+            placeholder="Buyurtma tavsifi"
+            value={formData.orderDescription}
+            onChange={handleInputChange}
+            rows={10} // Initial number of rows
+            style={{ maxHeight: "200px", overflowY: "auto" }} // Set max height and enable vertical scrolling
+          />
+        </div>
+        {/* EXPENSES DESCRIPTION */}
+        <div className="flex-1 min-w-[250px]">
+          <label
+            className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
+            htmlFor="orderExpensesDescription"
+          >
+            Harajatlar tavsifi
+          </label>
+          <textarea
+            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 resize-none overflow-auto"
+            id="orderExpensesDescription"
+            name="orderExpensesDescription"
+            required
+            placeholder="Harajatlar tavsifi"
+            value={formData.orderExpensesDescription}
+            onChange={handleInputChange}
+            rows={10} // Initial number of rows
+            style={{ maxHeight: "200px", overflowY: "auto" }} // Set max height and enable vertical scrolling
+          />
         </div>
 
         {/* PAYMENT STATUS */}
@@ -241,7 +284,7 @@ const OneOrderPage = () => {
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="orderPaymentStatus"
           >
-            Payment Status
+            Tolov holati
           </label>
           <select
             className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -251,30 +294,11 @@ const OneOrderPage = () => {
             value={formData.orderPaymentStatus}
             onChange={handleInputChange}
           >
-            <option value="">Select Status</option>
-            <option value="unpaid">Unpaid</option>
-            <option value="partiallyPaid">Partially Paid</option>
-            <option value="paid">Paid</option>
+            <option value="">Tanlang</option>
+            <option value="tolanmadi">To'lanmadi</option>
+            <option value="qismanTolandi">Qisman to'landi Paid</option>
+            <option value="tolandi">To'landi</option>
           </select>
-        </div>
-
-        {/* EXPENSES DESCRIPTION */}
-        <div className="flex-1 min-w-[250px]">
-          <label
-            className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
-            htmlFor="orderExpensesDescription"
-          >
-            Expenses Description
-          </label>
-          <input
-            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            id="orderExpensesDescription"
-            name="orderExpensesDescription"
-            type="text"
-            placeholder="Expenses Description"
-            value={formData.orderExpensesDescription}
-            onChange={handleInputChange}
-          />
         </div>
 
         {/* TOTAL AMOUNT */}
@@ -283,13 +307,13 @@ const OneOrderPage = () => {
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="orderTotalAmount"
           >
-            Total Amount
+            Buyurtma summasi
           </label>
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             id="orderTotalAmount"
             name="orderTotalAmount"
-            type="number"
+            type="string"
             required
             placeholder="Total Amount"
             value={formData.orderTotalAmount}
@@ -303,13 +327,13 @@ const OneOrderPage = () => {
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="orderExpensesAmount"
           >
-            Expenses Amount
+            Harajatlar summasi
           </label>
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             id="orderExpensesAmount"
             name="orderExpensesAmount"
-            type="number"
+            type="string"
             placeholder="Expenses Amount"
             value={formData.orderExpensesAmount}
             onChange={handleInputChange}
@@ -322,13 +346,13 @@ const OneOrderPage = () => {
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="orderTotalPaid"
           >
-            Total Paid
+            Jami to'landi
           </label>
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             id="orderTotalPaid"
             name="orderTotalPaid"
-            type="number"
+            type="string"
             placeholder="Total Paid"
             value={formData.orderTotalPaid}
             onChange={handleInputChange}
@@ -341,13 +365,13 @@ const OneOrderPage = () => {
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="orderTotalDebt"
           >
-            Total Debt
+            Jami qarz
           </label>
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             id="orderTotalDebt"
             name="orderTotalDebt"
-            type="number"
+            type="string"
             placeholder="Total Debt"
             value={formData.orderTotalDebt}
             onChange={handleInputChange}
@@ -362,7 +386,7 @@ const OneOrderPage = () => {
                 className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
                 htmlFor={`paymentType-${index}`}
               >
-                Payment Type
+                To'lov turi
               </label>
               <select
                 className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -371,9 +395,9 @@ const OneOrderPage = () => {
                 value={payment.paymentType}
                 onChange={(e) => handlePaymentChange(index, e)}
               >
-                <option value="">Select Payment Type</option>
-                <option value="cash">Cash</option>
-                <option value="card">Card</option>
+                <option value="">Tanlang</option>
+                <option value="naqd">naqd</option>
+                <option value="plastik">plastik</option>
               </select>
             </div>
 
@@ -382,13 +406,13 @@ const OneOrderPage = () => {
                 className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
                 htmlFor={`amount-${index}`}
               >
-                Amount
+                Miqdor
               </label>
               <input
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id={`amount-${index}`}
                 name="amount"
-                type="number"
+                type="string"
                 value={payment.amount}
                 onChange={(e) => handlePaymentChange(index, e)}
               />
@@ -399,7 +423,7 @@ const OneOrderPage = () => {
                 className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
                 htmlFor={`date-${index}`}
               >
-                Date
+                Sana
               </label>
               <input
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -419,7 +443,7 @@ const OneOrderPage = () => {
           onClick={addPayment}
           className="flex-1 min-w-[250px] text-white font-bold w-full rounded px-4 py-2 bg-gradient-to-br from-pink-500 to-pink-500 hover:from-pink-600 hover:to-pink-600"
         >
-          Add Payment
+          To'lov qo'shish
         </button>
 
         {/* SUBMIT BUTTON */}

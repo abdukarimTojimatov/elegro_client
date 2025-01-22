@@ -12,6 +12,7 @@ import { toast } from "react-hot-toast";
 
 const OrdersCards = () => {
   const { loading, error, data } = useQuery(GET_ORDERS);
+  console.log("date", data);
   const [deleteOrder] = useMutation(DELETE_ORDER, {
     refetchQueries: ["Orders"],
   });
@@ -43,18 +44,18 @@ const OrdersCards = () => {
   if (!data?.orders?.length) {
     return (
       <div className="text-center text-gray-500 p-4">
-        No orders found. Create your first order above.
+        Buyurtmalar mavjud emas.
       </div>
     );
   }
 
   const getPaymentStatusColor = (status) => {
     switch (status.toLowerCase()) {
-      case "paid":
-        return "bg-gradient-to-r from-green-700 to-green-500";
-      case "partiallypaid":
-        return "bg-gradient-to-r from-pink-800 to-pink-600";
-      case "unpaid":
+      case "tolandi":
+        return "bg-gradient-to-r from-green-700 to-green-400";
+      case "qismanTolandi":
+        return "bg-gradient-to-r from-pink-800 to-pink-500";
+      case "tolanmadi":
         return "bg-gradient-to-r from-blue-700 to-blue-500";
     }
   };
@@ -83,11 +84,11 @@ const OrdersCards = () => {
               </div>
             </div>
             <div className="text-sm">
-              <span className="font-semibold">Mijoz: </span>
+              <span className="font-semibold">Buyurtma nomi: </span>
               {truncateText(order.orderName, 30)}
             </div>
             <div className="text-sm">
-              <span className="font-semibold">Buyurtma nomi: </span>
+              <span className="font-semibold">Mijoz: </span>
               {truncateText(order.orderCustomerName, 15)}
             </div>
             <div className="text-sm">
@@ -109,24 +110,30 @@ const OrdersCards = () => {
             <div className="grid grid-cols-2 gap-2 mt-2">
               <div className="text-sm">
                 <span className="font-semibold">Jami: </span>
-                {order.orderTotalAmount}
+                {order.orderTotalAmount} so'm
               </div>
               <div className="text-sm pl-8">
                 <span className="font-semibold">To'landi: </span>
-                {order.orderTotalPaid}
+                {order.orderTotalPaid} so'm
               </div>
               <div className="text-sm">
                 <span className="font-semibold">Xarajatlar: </span>
-                {order?.orderExpensesAmount}
+                {order?.orderExpensesAmount} so'm
               </div>
               <div className="text-sm pl-8">
                 <span className="font-semibold">Qarz: </span>
-                {order.orderTotalDebt}
+                {order.orderTotalDebt} so'm
               </div>
             </div>
             <div className="text-sm mt-2">
-              <span className="font-semibold">Buyurtma vaqti: </span>
-              {new Date(order.date).toLocaleDateString()}
+              <span className="font-semibold">
+                Buyurtma qabul qilingan vaqti:{" "}
+              </span>
+              {order?.date}
+            </div>
+            <div className="text-sm mt-2">
+              <span className="font-semibold">Buyurtma yetkazish vaqti: </span>
+              {order?.orderReadyDate}
             </div>
           </div>
         </div>

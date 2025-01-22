@@ -19,6 +19,7 @@ export const CREATE_ORDER = gql`
       orderTotalDebt
       orderExpensesDescription
       orderLocation
+      orderReadyDate
       orderPayments {
         paymentType
         amount
@@ -45,10 +46,15 @@ export const UPDATE_ORDER = gql`
       orderTotalAmount
       orderExpensesAmount
       orderTotalPaid
+      orderReadyDate
       orderTotalDebt
       orderExpensesDescription
       orderLocation
-      orderPayments
+      orderPayments {
+        paymentType
+        amount
+        date
+      }
       date
     }
   }

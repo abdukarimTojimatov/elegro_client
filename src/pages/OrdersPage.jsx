@@ -19,7 +19,7 @@ const OrdersPage = () => {
     <div>
       <div className="accordion">
         <div onClick={toggleAccordion} className="cursor-pointer p-4 border ">
-          <h2>{isAccordionOpen ? "Close Creating Order" : "Create Order"}</h2>
+          <h2>{isAccordionOpen ? "Ortga" : "Buyurtma yaratish"}</h2>
         </div>
         {isAccordionOpen && (
           <div className="accordion-content p-4">

@@ -2,19 +2,19 @@ import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import Cards from "../components/Cards";
-import TransactionForm from "../components/TransactionForm";
+import ExpenceForm from "../components/ExpenceForm";
 import { MdLogout } from "react-icons/md";
 import toast from "react-hot-toast";
 import { useMutation, useQuery } from "@apollo/client";
 import { LOGOUT } from "../graphql/mutations/user.mutation";
-import { GET_TRANSACTION_STATISTICS } from "../graphql/queries/transaction.query";
+import { GET_EXPENCES_STATISTICS } from "../graphql/queries/expence.query";
 import { GET_AUTHENTICATED_USER } from "../graphql/queries/user.query";
 import { useEffect, useState } from "react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const HomePage = () => {
-  const { data } = useQuery(GET_TRANSACTION_STATISTICS);
+  const { data } = useQuery(GET_EXPENCES_STATISTICS);
   const { data: authUserData } = useQuery(GET_AUTHENTICATED_USER);
   console.log("data::::::", data);
   const [logout, { loading, client }] = useMutation(LOGOUT, {
@@ -91,7 +91,7 @@ const HomePage = () => {
       <div className="flex flex-col gap-6 items-center max-w-7xl mx-auto z-20 relative justify-center">
         <div className="flex items-center">
           <p className="md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gradient-to-r from-pink-600 via-indigo-500 to-pink-400 inline-block text-transparent bg-clip-text">
-            Har bir tiyinni asrang, har bir harajatingizni sanang
+            Har bir tiyinni asrang, har lahzani qadrlang
           </p>
           <img
             src={authUserData?.authUser.profilePicture}
@@ -116,7 +116,7 @@ const HomePage = () => {
             </div>
           )}
 
-          <TransactionForm />
+          <ExpenceForm />
         </div>
         <Cards />
       </div>
