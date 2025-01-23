@@ -8,7 +8,6 @@ export const CREATE_EXPENCE = gql`
       paymentType
       category
       amount
-      location
       date
     }
   }
@@ -22,7 +21,6 @@ export const UPDATE_EXPENCE = gql`
       paymentType
       category
       amount
-      location
       date
     }
   }
@@ -30,13 +28,12 @@ export const UPDATE_EXPENCE = gql`
 
 export const DELETE_EXPENCE = gql`
   mutation DeleteExpence($expenceId: ID!) {
-    deleteExpence(expencesId: $expenceId) {
+    deleteExpence(expenceId: $expenceId) {
       _id
       description
       paymentType
       category
       amount
-      location
       date
     }
   }

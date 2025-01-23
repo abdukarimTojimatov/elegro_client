@@ -25,6 +25,7 @@ const OneOrderPage = () => {
     orderDescription: data?.order?.orderDescription || "",
     orderCategory: data?.order?.orderCategory || "",
     orderType: data?.order?.orderType || "",
+    orderStatus: data?.order?.orderStatus || "",
     orderPaymentStatus: data?.order?.orderPaymentStatus || "unpaid",
     orderTotalAmount: data?.order?.orderTotalAmount || "",
     orderExpensesAmount: data?.order?.orderExpensesAmount || "",
@@ -109,6 +110,7 @@ const OneOrderPage = () => {
         orderCategory: data?.order?.orderCategory,
         orderType: data?.order?.orderType,
         orderPaymentStatus: data?.order?.orderPaymentStatus,
+        orderStatus: data?.order?.orderStatus,
         orderTotalAmount: data?.order?.orderTotalAmount,
         orderExpensesAmount: data?.order?.orderExpensesAmount,
         orderTotalPaid: data?.order?.orderTotalPaid,
@@ -234,6 +236,30 @@ const OneOrderPage = () => {
             <option value="bozor">Bozor</option>
             <option value="buyurtma">Buyurtma</option>
             <option value="boshqa">Boshqalar</option>
+          </select>
+        </div>
+
+        {/* ORDER STATUS */}
+        <div className="flex-1 min-w-[250px]">
+          <label
+            className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
+            htmlFor="orderStatus"
+          >
+            Buyurtma holati
+          </label>
+          <select
+            className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            id="orderStatus"
+            name="orderStatus"
+            required
+            value={formData.orderStatus}
+            onChange={handleInputChange}
+          >
+            <option value="">Tanlang</option>
+            <option value="qabul qilingan">Qabul qilingan</option>
+            <option value="tayyorlanayabdi">Tayyorlanayabdi</option>
+            <option value="tayyor">Tayyor</option>
+            <option value="ornatildi">O'rnatildi</option>
           </select>
         </div>
 

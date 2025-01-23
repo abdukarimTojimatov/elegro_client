@@ -17,6 +17,7 @@ export const GET_ORDERS = gql`
       orderExpensesAmount
       orderTotalPaid
       orderTotalDebt
+      orderStatus
       orderExpensesDescription
       orderLocation
       orderReadyDate
@@ -47,7 +48,9 @@ export const GET_ORDER = gql`
       orderTotalAmount
       orderExpensesAmount
       orderTotalPaid
+      orderStatus
       orderTotalDebt
+
       orderExpensesDescription
       orderLocation
       orderPayments {

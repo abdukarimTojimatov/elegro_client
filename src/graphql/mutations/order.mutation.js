@@ -12,6 +12,7 @@ export const CREATE_ORDER = gql`
       orderDescription
       orderCategory
       orderType
+      orderStatus
       orderPaymentStatus
       orderTotalAmount
       orderExpensesAmount
@@ -41,6 +42,7 @@ export const UPDATE_ORDER = gql`
       orderCustomerPhoneNumber
       orderDescription
       orderCategory
+      orderStatus
       orderType
       orderPaymentStatus
       orderTotalAmount

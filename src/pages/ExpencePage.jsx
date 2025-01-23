@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  GET_EXPENCES,
+  GET_EXPENCE,
   GET_EXPENCES_STATISTICS,
 } from "../graphql/queries/expence.query";
 import { UPDATE_EXPENCE } from "../graphql/mutations/expence.mutation";
@@ -13,10 +13,11 @@ import ExpenceFormSkeleton from "../skeletons/ExpenceFormSkeleton";
 
 const ExpencePage = () => {
   const { id } = useParams();
-  const { loading, data } = useQuery(GET_EXPENCES, {
+  const { loading, data } = useQuery(GET_EXPENCE, {
     variables: { id: id },
   });
 
+  console.log("daat", data);
   const [updateExpence, { loading: loadingUpdate }] = useMutation(
     UPDATE_EXPENCE,
     {
@@ -26,12 +27,11 @@ const ExpencePage = () => {
   );
 
   const [formData, setFormData] = useState({
-    description: data?.expences?.description || "",
-    paymentType: data?.expences?.paymentType || "",
-    category: data?.expences?.category || "",
-    amount: data?.expences?.amount || "",
-    location: data?.expences?.location || "",
-    date: data?.expences?.date || "",
+    description: data?.expence?.description || "",
+    paymentType: data?.expence?.paymentType || "",
+    category: data?.expence?.category || "",
+    amount: data?.expence?.amount || "",
+    date: data?.expence?.date || "",
   });
 
   const handleSubmit = async (e) => {
@@ -45,7 +45,7 @@ const ExpencePage = () => {
           input: {
             ...formData,
             amount,
-            expencesId: id,
+            ExpenceId: id,
           },
         },
       });
@@ -66,12 +66,11 @@ const ExpencePage = () => {
   useEffect(() => {
     if (data) {
       setFormData({
-        description: data?.expences?.description,
-        paymentType: data?.expences?.paymentType,
-        category: data?.expences?.category,
-        amount: data?.expences?.amount,
-        location: data?.expences?.location,
-        date: data?.expences?.date,
+        description: data?.expence?.description,
+        paymentType: data?.expence?.paymentType,
+        category: data?.expence?.category,
+        amount: data?.expence?.amount,
+        date: data?.expence?.date,
       });
     }
   }, [data]);
@@ -193,24 +192,6 @@ const ExpencePage = () => {
 
         {/* LOCATION */}
         <div className="flex flex-wrap gap-3">
-          <div className="w-full flex-1 mb-6 md:mb-0">
-            <label
-              className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
-              htmlFor="location"
-            >
-              Location
-            </label>
-            <input
-              className="appearance-none block w-full bg-gray-200 text-gray-700 border  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              id="location"
-              name="location"
-              type="text"
-              placeholder="New York"
-              value={formData.location}
-              onChange={handleInputChange}
-            />
-          </div>
-
           {/* DATE */}
           <div className="w-full flex-1">
             <label

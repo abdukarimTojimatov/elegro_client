@@ -4,10 +4,10 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import ExpencesPage from "./pages/ExpencePage";
+import ExpencePage from "./pages/ExpencePage";
 import NotFoundPage from "./pages/NotFoundPage";
 
-import IncomesPage from "./pages/IncomesPage";
+import CreateOrderPage from "./pages/CreateOrderPage";
 import OrdersPage from "./pages/OrdersPage";
 import OneOrderPage from "./pages/OneOrderPage";
 
@@ -44,8 +44,8 @@ function App() {
           element={!data?.authUser ? <SignUpPage /> : <Navigate to="/" />}
         />
         <Route
-          path="/expenses/:id"
-          element={data?.authUser ? <ExpencesPage /> : <Navigate to="/login" />}
+          path="/expences/:id"
+          element={data?.authUser ? <ExpencePage /> : <Navigate to="/login" />}
         />
         {/* <Route
           path="/expenses"
@@ -58,6 +58,12 @@ function App() {
         <Route
           path="/orders"
           element={data?.authUser ? <OrdersPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/orders/create"
+          element={
+            data?.authUser ? <CreateOrderPage /> : <Navigate to="/login" />
+          }
         />
         <Route
           path="/orders/:id"

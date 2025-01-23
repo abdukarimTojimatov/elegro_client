@@ -19,7 +19,7 @@ const categoryColorMap = {
 };
 
 const Card = ({ expence, authUser }) => {
-  let { category, amount, location, date, paymentType, description } = expence;
+  let { category, amount, date, paymentType, description } = expence;
   const cardClass = categoryColorMap[category];
   const [deleteExpence, { loading }] = useMutation(DELETE_EXPENCE, {
     refetchQueries: ["GetExpences", "GetExpencesStatistics"],
@@ -30,12 +30,11 @@ const Card = ({ expence, authUser }) => {
   category = category[0]?.toUpperCase() + category.slice(1);
   paymentType = paymentType[0]?.toUpperCase() + paymentType.slice(1);
 
-  const formattedDate = formatDate(date);
-
   const handleDelete = async () => {
     try {
+      console.log("expence", expence._id);
       await deleteExpence({
-        variables: { expencesId: expence._id },
+        variables: { expenceId: expence._id },
       });
       toast.success("Expences deleted successfully");
     } catch (error) {
@@ -45,7 +44,9 @@ const Card = ({ expence, authUser }) => {
   };
 
   return (
-    <div className={`rounded-md p-4 bg-gradient-to-br ${cardClass}`}>
+    <div
+      className={"rounded-md p-4 bg-gradient-to-br from-green-700 to-green-400"}
+    >
       <div className="flex flex-col gap-3">
         <div className="flex flex-row items-center justify-between">
           <h2 className="text-lg font-bold text-white">{category}</h2>
@@ -63,22 +64,19 @@ const Card = ({ expence, authUser }) => {
         </div>
         <p className="text-white flex items-center gap-1">
           <BsCardText />
-          Description: {description}
+          Xarajat haqida: {description}
         </p>
         <p className="text-white flex items-center gap-1">
           <MdOutlinePayments />
-          Payment Type: {paymentType}
+          To'lov turi: {paymentType}
         </p>
         <p className="text-white flex items-center gap-1">
           <FaSackDollar />
-          Amount: ${amount}
+          Miqdori: {amount.toLocaleString("uz-UZ")} so'm
         </p>
-        <p className="text-white flex items-center gap-1">
-          <FaLocationDot />
-          Location: {location || "N/A"}
-        </p>
+
         <div className="flex justify-between items-center">
-          <p className="text-xs text-black font-bold">{formattedDate}</p>
+          <p className="text-xs text-black font-bold">{date}</p>
           <img
             src={authUser?.profilePicture}
             className="h-8 w-8 border rounded-full"

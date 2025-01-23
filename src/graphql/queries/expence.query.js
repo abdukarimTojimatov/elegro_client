@@ -8,7 +8,6 @@ export const GET_EXPENCES = gql`
       paymentType
       category
       amount
-      location
       date
     }
   }
@@ -22,7 +21,6 @@ export const GET_EXPENCE = gql`
       paymentType
       category
       amount
-      location
       date
       user {
         name

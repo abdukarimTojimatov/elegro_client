@@ -25,7 +25,7 @@ const HomePage = () => {
     labels: [],
     datasets: [
       {
-        label: "$",
+        label: "so'm",
         data: [],
         backgroundColor: [],
         borderColor: [],
@@ -48,15 +48,18 @@ const HomePage = () => {
       const borderColors = [];
 
       categories.forEach((category) => {
-        if (category === "saving") {
+        if (category === "Laminad") {
           backgroundColors.push("rgba(75, 192, 192)");
           borderColors.push("rgba(75, 192, 192)");
-        } else if (category === "expense") {
+        } else if (category === "Mashina xarajatlari") {
           backgroundColors.push("rgba(255, 99, 132)");
           borderColors.push("rgba(255, 99, 132)");
-        } else if (category === "investment") {
+        } else if (category === "Soliq") {
           backgroundColors.push("rgba(54, 162, 235)");
           borderColors.push("rgba(54, 162, 235)");
+        } else if (category === "Elektr") {
+          backgroundColors.push("rgba(122, 142, 200)");
+          borderColors.push("rgba(122, 142, 200)");
         }
       });
 
@@ -91,7 +94,7 @@ const HomePage = () => {
       <div className="flex flex-col gap-6 items-center max-w-7xl mx-auto z-20 relative justify-center">
         <div className="flex items-center">
           <p className="md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gradient-to-r from-pink-600 via-indigo-500 to-pink-400 inline-block text-transparent bg-clip-text">
-            Har bir tiyinni asrang, har lahzani qadrlang
+            Har lahzani qadrlang
           </p>
           <img
             src={authUserData?.authUser.profilePicture}

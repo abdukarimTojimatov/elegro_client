@@ -20,7 +20,6 @@ const ExpenceForm = () => {
       paymentType: formData.get("paymentType"),
       category: formData.get("category"),
       amount: parseFloat(formData.get("amount")),
-      location: formData.get("location"),
       date: formData.get("date"),
     };
 
@@ -45,7 +44,7 @@ const ExpenceForm = () => {
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="description"
           >
-            Expences
+            Xarajat haqida
           </label>
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -64,7 +63,7 @@ const ExpenceForm = () => {
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="paymentType"
           >
-            Payment Type
+            To'lov turi
           </label>
           <div className="relative">
             <select
@@ -93,7 +92,7 @@ const ExpenceForm = () => {
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="category"
           >
-            Category
+            Kategoriya
           </label>
           <div className="relative">
             <select
@@ -101,9 +100,6 @@ const ExpenceForm = () => {
               id="category"
               name="category"
             >
-              <option value={"Egamberdi"}>Egamberdi</option>
-              <option value={"Elmurod"}>Elmurod</option>
-              <option value={"Rozimuhammad"}>Rozimuhammad</option>
               <option value={"Laminad"}>Laminad</option>
               <option value={"Mashina xarajatlari"}>Mashina xarajatlari</option>
               <option value={"Soliq"}>Soliq</option>
@@ -120,14 +116,18 @@ const ExpenceForm = () => {
             </div>
           </div>
         </div>
+      </div>
 
+      {/* LOCATION */}
+      <div className="flex flex-wrap gap-3">
+        {/* DATE */}
         {/* AMOUNT */}
         <div className="w-full flex-1 mb-6 md:mb-0">
           <label
             className="block uppercase text-white text-xs font-bold mb-2"
             htmlFor="amount"
           >
-            Amount($)
+            Miqdori (so'm)
           </label>
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -137,33 +137,12 @@ const ExpenceForm = () => {
             placeholder="150"
           />
         </div>
-      </div>
-
-      {/* LOCATION */}
-      <div className="flex flex-wrap gap-3">
-        <div className="w-full flex-1 mb-6 md:mb-0">
-          <label
-            className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
-            htmlFor="location"
-          >
-            Location
-          </label>
-          <input
-            className="appearance-none block w-full bg-gray-200 text-gray-700 border  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-            id="location"
-            name="location"
-            type="text"
-            placeholder="New York"
-          />
-        </div>
-
-        {/* DATE */}
         <div className="w-full flex-1">
           <label
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="date"
           >
-            Date
+            Sana
           </label>
           <input
             type="date"
@@ -183,7 +162,7 @@ const ExpenceForm = () => {
         type="submit"
         disabled={loading}
       >
-        {loading ? "Loading..." : "Add Expences"}
+        {loading ? "Loading..." : "Xarajat qo'shish"}
       </button>
     </form>
   );

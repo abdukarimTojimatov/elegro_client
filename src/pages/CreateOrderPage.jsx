@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client";
 import { CREATE_ORDER } from "../graphql/mutations/order.mutation"; // Adjust the path as necessary
 import toast from "react-hot-toast";
 
-const OrderForm = ({ onCreateOrder }) => {
+const CreateOrderPage = () => {
   const [orderData, setOrderData] = useState({
     orderName: "",
     orderCustomerName: "",
@@ -317,4 +317,4 @@ const OrderForm = ({ onCreateOrder }) => {
   );
 };
 
-export default OrderForm;
+export default CreateOrderPage;
