@@ -23,7 +23,7 @@ const CreateOrderPage = () => {
   });
 
   const [createOrder, { loading }] = useMutation(CREATE_ORDER, {
-    refetchQueries: ["Orders"], // Adjust as necessary
+    // Adjust as necessary
     onCompleted: () => {
       toast.success("Order created successfully");
       setOrderData({
@@ -61,8 +61,10 @@ const CreateOrderPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createOrder({ variables: { input: orderData } });
-      onCreateOrder();
+      await createOrder({
+        variables: { input: orderData },
+        refetchQueries: ["Orders"],
+      });
     } catch (error) {
       console.error("Error creating order:", error);
     }

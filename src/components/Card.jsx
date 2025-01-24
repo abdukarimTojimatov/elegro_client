@@ -21,9 +21,7 @@ const categoryColorMap = {
 const Card = ({ expence, authUser }) => {
   let { category, amount, date, paymentType, description } = expence;
   const cardClass = categoryColorMap[category];
-  const [deleteExpence, { loading }] = useMutation(DELETE_EXPENCE, {
-    refetchQueries: ["GetExpences", "GetExpencesStatistics"],
-  });
+  const [deleteExpence, { loading }] = useMutation(DELETE_EXPENCE);
 
   // Capitalize the first letter of the description
   description = description[0]?.toUpperCase() + description.slice(1);
@@ -32,9 +30,9 @@ const Card = ({ expence, authUser }) => {
 
   const handleDelete = async () => {
     try {
-      console.log("expence", expence._id);
       await deleteExpence({
         variables: { expenceId: expence._id },
+        refetchQueries: ["GetExpences", "GetExpencesStatistics"],
       });
       toast.success("Expences deleted successfully");
     } catch (error) {

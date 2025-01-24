@@ -1,21 +1,20 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import ExpencePage from "./pages/ExpencePage";
 import NotFoundPage from "./pages/NotFoundPage";
-
 import CreateOrderPage from "./pages/CreateOrderPage";
 import OrdersPage from "./pages/OrdersPage";
 import OneOrderPage from "./pages/OneOrderPage";
-
 import Header from "./components/ui/Header";
 import Navbar from "./components/Navbar";
 import { useQuery } from "@apollo/client";
 import { GET_AUTHENTICATED_USER } from "./graphql/queries/user.query";
 import { Toaster } from "react-hot-toast";
+import SharingPage from "./pages/SharingPage";
+import SharingEditPage from "./pages/SharingEditPage";
 
 function App() {
   const { loading, data } = useQuery(GET_AUTHENTICATED_USER);
@@ -51,10 +50,10 @@ function App() {
           path="/expenses"
           element={data?.authUser ? <ExpensesPage /> : <Navigate to="/login" />}
         /> */}
-        {/* <Route
-          path="/incomes"
-          element={data?.authUser ? <IncomesPage /> : <Navigate to="/login" />}
-        /> */}
+
+        <Route path="/sharings" element={<SharingPage />} />
+        <Route path="/sharings/:id" element={<SharingEditPage />} />
+
         <Route
           path="/orders"
           element={data?.authUser ? <OrdersPage /> : <Navigate to="/login" />}

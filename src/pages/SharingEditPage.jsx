@@ -1,38 +1,37 @@
 import React from "react";
-
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  GET_EXPENCE,
-  GET_EXPENCES_STATISTICS,
-} from "../graphql/queries/expence.query";
-import { UPDATE_EXPENCE } from "../graphql/mutations/expence.mutation";
+  GET_SHARING,
+  GET_SHARINGS_STATISTICS,
+} from "../graphql/queries/sharing.query";
+import { UPDATE_SHARING } from "../graphql/mutations/sharing.mutation";
 import toast from "react-hot-toast";
 import ExpenceFormSkeleton from "../skeletons/ExpenceFormSkeleton";
 
-const ExpencePage = () => {
+const SharingEditPage = () => {
   const { id } = useParams();
-  const { loading, data } = useQuery(GET_EXPENCE, {
+  const { loading, data } = useQuery(GET_SHARING, {
     variables: { id: id },
   });
 
-  const [updateExpence, { loading: loadingUpdate }] =
-    useMutation(UPDATE_EXPENCE);
+  const [updateSharing, { loading: loadingUpdate }] =
+    useMutation(UPDATE_SHARING);
 
   const [formData, setFormData] = useState({
-    description: data?.expence?.description || "",
-    paymentType: data?.expence?.paymentType || "",
-    category: data?.expence?.category || "",
-    amount: data?.expence?.amount || "",
-    date: data?.expence?.date || "",
+    description: data?.sharing?.description || "",
+    paymentType: data?.sharing?.paymentType || "",
+    category: data?.sharing?.category || "",
+    amount: data?.sharing?.amount || "",
+    date: data?.sharing?.date || "",
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const amount = parseFloat(formData.amount);
     try {
-      await updateExpence({
+      await updateSharing({
         variables: {
           input: {
             ...formData,
@@ -40,9 +39,9 @@ const ExpencePage = () => {
             ExpenceId: id,
           },
         },
-        refetchQueries: [{ query: GET_EXPENCES_STATISTICS }],
+        refetchQueries: [{ query: GET_SHARINGS_STATISTICS }],
       });
-      toast.success("Expences updated successfully");
+      toast.success("Sharing updated successfully");
     } catch (error) {
       toast.error(error.message);
     }
@@ -59,11 +58,11 @@ const ExpencePage = () => {
   useEffect(() => {
     if (data) {
       setFormData({
-        description: data?.expence?.description,
-        paymentType: data?.expence?.paymentType,
-        category: data?.expence?.category,
-        amount: data?.expence?.amount,
-        date: data?.expence?.date,
+        description: data?.sharing?.description,
+        paymentType: data?.sharing?.paymentType,
+        category: data?.sharing?.category,
+        amount: data?.sharing?.amount,
+        date: data?.sharing?.date,
       });
     }
   }, [data]);
@@ -73,13 +72,13 @@ const ExpencePage = () => {
   return (
     <div className="h-screen max-w-4xl mx-auto flex flex-col items-center">
       <p className="md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gradient-to-r from-pink-600 via-indigo-500 to-pink-400 inline-block text-transparent bg-clip-text">
-        Xarajatlarni o'zgartirish
+        Ulushlarni o'zgartirish
       </p>
       <form
         className="w-full max-w-lg flex flex-col md:flex-col sm:flex-col  gap-5 px-3 "
         onSubmit={handleSubmit}
       >
-        {/* EXPENCES */}
+        {/* SHARINGS */}
         <div className="flex flex-wrap gap-3">
           <div className="w-full flex-1 mb-6 md:mb-0">
             <label
@@ -217,4 +216,4 @@ const ExpencePage = () => {
     </div>
   );
 };
-export default ExpencePage;
+export default SharingEditPage;

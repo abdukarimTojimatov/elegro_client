@@ -25,7 +25,6 @@ export const GET_EXPENCE = gql`
       user {
         name
         username
-        profilePicture
       }
     }
   }
@@ -33,7 +32,7 @@ export const GET_EXPENCE = gql`
 
 export const GET_EXPENCES_STATISTICS = gql`
   query GetExpencesStatistics {
-    categoryStatistics {
+    categoryStatisticsExpense {
       category
       totalAmount
     }

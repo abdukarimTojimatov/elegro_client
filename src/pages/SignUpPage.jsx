@@ -1,24 +1,57 @@
-import React from "react";
-import { useState } from "react";
-
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import RadioButton from "../components/RadioButton";
-import InputField from "../components/InputField";
 import { SIGN_UP } from "../graphql/mutations/user.mutation";
 import toast from "react-hot-toast";
 import { useMutation } from "@apollo/client";
 
+// InputField Component
+const InputField = ({ label, id, name, type = "text", value, onChange }) => {
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!isPasswordVisible);
+  };
+
+  return (
+    <div className="relative">
+      <label
+        htmlFor={id}
+        className="block text-sm font-medium text-gray-700 mb-1"
+      >
+        {label}
+      </label>
+      <div className="relative">
+        <input
+          id={id}
+          name={name}
+          type={type === "password" && !isPasswordVisible ? "password" : "text"}
+          value={value}
+          onChange={onChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800" // Add text color class here
+        />
+        {type === "password" && (
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="absolute inset-y-0 right-3 flex items-center text-gray-600 hover:text-gray-800 focus:outline-none"
+          >
+            {isPasswordVisible ? "🙈" : "👁️"}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// SignUpPage Component
 const SignUpPage = () => {
   const [signUpData, setSignUpData] = useState({
-    name: "",
     username: "",
     password: "",
-    gender: "",
+    phoneNumber: "",
   });
 
-  const [signup, { loading }] = useMutation(SIGN_UP, {
-    refetchQueries: ["GetAuthenticatedUser"],
-  });
+  const [signup, { loading }] = useMutation(SIGN_UP);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +60,9 @@ const SignUpPage = () => {
         variables: {
           input: signUpData,
         },
+        refetchQueries: ["GetAuthenticatedUser"],
       });
+      toast.success("Sign up successful!");
     } catch (error) {
       console.error("Error:", error);
       toast.error(error.message);
@@ -35,19 +70,11 @@ const SignUpPage = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value, type } = e.target;
-
-    if (type === "radio") {
-      setSignUpData((prevData) => ({
-        ...prevData,
-        gender: value,
-      }));
-    } else {
-      setSignUpData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
+    const { name, value } = e.target;
+    setSignUpData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   return (
@@ -56,54 +83,45 @@ const SignUpPage = () => {
         <div className="w-full bg-gray-100 min-w-80 sm:min-w-96 flex items-center justify-center">
           <div className="max-w-md w-full p-6">
             <h1 className="text-3xl font-semibold mb-6 text-black text-center">
-              Sign Up
+              Ro'yhatdan o'tish
             </h1>
             <h1 className="text-sm font-semibold mb-6 text-gray-500 text-center">
-              Join to keep track of your expenses
+              Elegro Mebel
             </h1>
             <form className="space-y-4" onSubmit={handleSubmit}>
               <InputField
-                label="Full Name"
-                id="name"
-                name="name"
-                value={signUpData.name}
-                onChange={handleChange}
-              />
-              <InputField
-                label="Username"
+                label="Ism"
                 id="username"
                 name="username"
                 value={signUpData.username}
                 onChange={handleChange}
               />
-
               <InputField
-                label="Password"
+                label="Parol"
                 id="password"
                 name="password"
                 type="password"
                 value={signUpData.password}
                 onChange={handleChange}
               />
-              <div className="flex gap-10">
-                <RadioButton
-                  id="male"
-                  label="Male"
-                  name="gender"
-                  value="male"
-                  onChange={handleChange}
-                  checked={signUpData.gender === "male"}
-                />
-                <RadioButton
-                  id="female"
-                  label="Female"
-                  name="gender"
-                  value="female"
-                  onChange={handleChange}
-                  checked={signUpData.gender === "female"}
-                />
-              </div>
-
+              <InputField
+                label="Telefon raqami"
+                id="phoneNumber"
+                name="phoneNumber"
+                type="text"
+                value={signUpData.phoneNumber || "+998"}
+                onChange={handleChange}
+                onFocus={(e) => {
+                  if (e.target.value === "") {
+                    e.target.value = "+998"; // Auto-fill on focus if empty
+                  }
+                }}
+                // onBlur={(e) => {
+                //   if (e.target.value === "+998") {
+                //     e.target.value = "+998"; // Keep it as +998 if nothing else is entered
+                //   }
+                // }}
+              />
               <div>
                 <button
                   type="submit"
@@ -116,9 +134,10 @@ const SignUpPage = () => {
             </form>
             <div className="mt-4 text-sm text-gray-600 text-center">
               <p>
-                Already have an account?{" "}
+                Agar accountingiz mavjud bo'lsa?
+                <br />
                 <Link to="/login" className="text-black hover:underline">
-                  Login here
+                  Bu yerga bosing 👉 Login
                 </Link>
               </p>
             </div>

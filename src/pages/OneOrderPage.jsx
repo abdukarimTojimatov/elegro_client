@@ -14,9 +14,7 @@ const OneOrderPage = () => {
     variables: { orderId: id },
   });
 
-  const [updateOrder, { loading: loadingUpdate }] = useMutation(UPDATE_ORDER, {
-    refetchQueries: [{ query: GET_ORDER }], // Adjust as necessary
-  });
+  const [updateOrder, { loading: loadingUpdate }] = useMutation(UPDATE_ORDER);
 
   const [formData, setFormData] = useState({
     orderName: data?.order?.orderName || "",
@@ -59,6 +57,7 @@ const OneOrderPage = () => {
             ...formattedData,
             orderId: id,
           },
+          refetchQueries: [{ query: GET_ORDER }],
         },
       });
 

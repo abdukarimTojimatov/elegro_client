@@ -13,13 +13,12 @@ import { toast } from "react-hot-toast";
 const OrdersPage = () => {
   const { loading, error, data } = useQuery(GET_ORDERS);
   console.log("date", data);
-  const [deleteOrder] = useMutation(DELETE_ORDER, {
-    refetchQueries: ["Orders"],
-  });
+  const [deleteOrder] = useMutation(DELETE_ORDER);
   const handleDelete = async (orderId) => {
     try {
       await deleteOrder({
         variables: { orderId },
+        refetchQueries: ["Orders"],
       });
       toast.success("Order deleted successfully");
     } catch (error) {

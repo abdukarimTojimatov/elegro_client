@@ -50,7 +50,6 @@ export const GET_ORDER = gql`
       orderTotalPaid
       orderStatus
       orderTotalDebt
-
       orderExpensesDescription
       orderLocation
       orderPayments {

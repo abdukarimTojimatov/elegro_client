@@ -1,7 +1,5 @@
-import React from "react";
-
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import InputField from "../components/InputField";
 import { useMutation } from "@apollo/client";
 import { LOGIN } from "../graphql/mutations/user.mutation";
@@ -9,12 +7,11 @@ import toast from "react-hot-toast";
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState({
-    username: "",
+    phoneNumber: "+998", // Start with +998
     password: "",
   });
-  const [login, { loading }] = useMutation(LOGIN, {
-    refetchQueries: ["GetAuthenticatedUser"],
-  });
+  const [login, { loading }] = useMutation(LOGIN);
+  const [isPasswordVisible, setPasswordVisible] = useState(false); // State for password visibility
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,14 +23,21 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!loginData.username || !loginData.password)
+    if (!loginData.phoneNumber || !loginData.password)
       return toast.error("Please fill in all fields");
     try {
-      await login({ variables: { input: loginData } });
+      await login({
+        variables: { input: loginData },
+        refetchQueries: ["GetAuthenticatedUser"],
+      });
     } catch (error) {
       console.error("Error logging in:", error);
       toast.error(error.message);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!isPasswordVisible);
   };
 
   return (
@@ -49,27 +53,38 @@ const LoginPage = () => {
             </h1>
             <form className="space-y-4" onSubmit={handleSubmit}>
               <InputField
-                label="Username"
-                id="username"
-                name="username"
-                value={loginData.username}
+                label="Phone Number"
+                id="phoneNumber"
+                name="phoneNumber"
+                value={loginData.phoneNumber}
                 onChange={handleChange}
+                onFocus={(e) => {
+                  if (e.target.value === "") {
+                    e.target.value = "+998"; // Auto-fill on focus if empty
+                  }
+                }}
               />
-
-              <InputField
-                label="Password"
-                id="password"
-                name="password"
-                type="password"
-                value={loginData.password}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <InputField
+                  label="Password"
+                  id="password"
+                  name="password"
+                  type={isPasswordVisible ? "text" : "password"} // Use visibility state
+                  value={loginData.password}
+                  onChange={handleChange}
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute inset-y-0 pt-6 right-3 flex items-center text-gray-600 hover:text-gray-800 focus:outline-none"
+                >
+                  {isPasswordVisible ? "🙈" : "👁️"}
+                </button>
+              </div>
               <div>
                 <button
                   type="submit"
-                  className="w-full bg-black text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black  focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300
-										disabled:opacity-50 disabled:cursor-not-allowed
-									"
+                  className="w-full bg-black text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={loading}
                 >
                   {loading ? "Loading..." : "Login"}
@@ -90,4 +105,5 @@ const LoginPage = () => {
     </div>
   );
 };
+
 export default LoginPage;

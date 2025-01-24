@@ -1,10 +1,10 @@
 import React from "react";
 import { useMutation } from "@apollo/client";
-import { CREATE_EXPENCE } from "../graphql/mutations/expence.mutation";
+import { CREATE_SHARING } from "../graphql/mutations/sharing.mutation";
 import toast from "react-hot-toast";
 
-const ExpenceForm = () => {
-  const [createExpence, { loading }] = useMutation(CREATE_EXPENCE);
+const SharingForm = () => {
+  const [createSharing, { loading }] = useMutation(CREATE_SHARING);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,22 +12,22 @@ const ExpenceForm = () => {
     const form = e.target;
     const formData = new FormData(form);
 
-    const expenceData = {
-      description: formData.get("description"),
-      paymentType: formData.get("paymentType"),
-      category: formData.get("category"),
-      amount: parseFloat(formData.get("amount")),
-      date: formData.get("date"),
+    const sharingData = {
+      sharingDescription: formData.get("sharingDescription"),
+      sharingPaymentType: formData.get("sharingPaymentType"),
+      sharingCategoryType: formData.get("sharingCategoryType"),
+      sharingAmount: parseFloat(formData.get("sharingAmount")),
+      sharingDate: formData.get("sharingDate"),
     };
 
     try {
-      await createExpence({
-        variables: { input: expenceData },
-        refetchQueries: ["GetExpences", "GetExpencesStatistics"],
+      await createSharing({
+        variables: { input: sharingData },
+        refetchQueries: ["GetSharings", "GetSharingsStatistics"],
       });
 
       form.reset();
-      toast.success("Expence created successfully");
+      toast.success("Sharing created successfully");
     } catch (error) {
       toast.error(error.message);
     }
@@ -42,16 +42,15 @@ const ExpenceForm = () => {
       <div className="flex flex-col gap-2">
         <label
           className="block uppercase tracking-wide text-white text-sm font-bold"
-          htmlFor="description"
+          htmlFor="sharingDescription"
         >
-          Xarajat haqida
+          Ulush haqida
         </label>
         <input
           className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-          id="description"
-          name="description"
+          id="sharingDescription"
+          name="sharingDescription"
           type="text"
-          required
           placeholder="Izoh yozing"
         />
       </div>
@@ -62,37 +61,34 @@ const ExpenceForm = () => {
         <div className="flex-1">
           <label
             className="block uppercase tracking-wide text-white text-sm font-bold mb-2"
-            htmlFor="paymentType"
+            htmlFor="sharingPaymentType"
           >
             To'lov turi
           </label>
           <select
             className="block appearance-none w-full bg-gray-200 border text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            id="paymentType"
-            name="paymentType"
+            id="sharingPaymentType"
+            name="sharingPaymentType"
           >
             <option value="plastik">Plastik</option>
             <option value="naqd">Naqd</option>
           </select>
         </div>
-
-        {/* Category */}
         <div className="flex-1">
           <label
             className="block uppercase tracking-wide text-white text-sm font-bold mb-2"
-            htmlFor="category"
+            htmlFor="sharingCategoryType"
           >
-            Kategoriya
+            Kim olgan
           </label>
           <select
             className="block appearance-none w-full bg-gray-200 border text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            id="category"
-            name="category"
+            id="sharingCategoryType"
+            name="sharingCategoryType"
           >
-            <option value="Laminad">Laminad</option>
-            <option value="Mashina xarajatlari">Mashina xarajatlari</option>
-            <option value="Soliq">Soliq</option>
-            <option value="Elektr">Elektr</option>
+            <option value="Egamberdi">Egamberdi</option>
+            <option value="Elmurod">Elmurod</option>
+            <option value="Rozimuhammad">Rozimuhammad</option>
           </select>
         </div>
       </div>
@@ -103,14 +99,14 @@ const ExpenceForm = () => {
         <div className="flex-1">
           <label
             className="block uppercase text-white text-sm font-bold mb-2"
-            htmlFor="amount"
+            htmlFor="sharingAmount"
           >
             Miqdori (so'm)
           </label>
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            id="amount"
-            name="amount"
+            id="sharingAmount"
+            name="sharingAmount"
             type="number"
             placeholder="Summa kiriting"
           />
@@ -120,16 +116,16 @@ const ExpenceForm = () => {
         <div className="flex-1">
           <label
             className="block uppercase tracking-wide text-white text-sm font-bold mb-2"
-            htmlFor="date"
+            htmlFor="sharingDate"
           >
             Sana
           </label>
           <input
             type="date"
-            name="date"
-            id="date"
+            name="sharingDate"
+            id="sharingDate"
             className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
-            placeholder="Select date"
+            placeholder="Sanani tanlang"
           />
         </div>
       </div>
@@ -146,4 +142,4 @@ const ExpenceForm = () => {
   );
 };
 
-export default ExpenceForm;
+export default SharingForm;
