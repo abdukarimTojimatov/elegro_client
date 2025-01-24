@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
 import { CREATE_ORDER } from "../graphql/mutations/order.mutation"; // Adjust the path as necessary
 import toast from "react-hot-toast";
 
 const CreateOrderPage = () => {
+  const navigate = useNavigate();
   const [orderData, setOrderData] = useState({
     orderName: "",
     orderCustomerName: "",
@@ -23,7 +25,6 @@ const CreateOrderPage = () => {
   });
 
   const [createOrder, { loading }] = useMutation(CREATE_ORDER, {
-    // Adjust as necessary
     onCompleted: () => {
       toast.success("Order created successfully");
       setOrderData({
@@ -65,6 +66,7 @@ const CreateOrderPage = () => {
         variables: { input: orderData },
         refetchQueries: ["Orders"],
       });
+      navigate("/orders");
     } catch (error) {
       console.error("Error creating order:", error);
     }

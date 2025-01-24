@@ -14,18 +14,14 @@ export const GET_EXPENCES = gql`
 `;
 
 export const GET_EXPENCE = gql`
-  query GetExpence($id: ID!) {
-    expence(expenceId: $id) {
+  query GetExpence($expenceId: ID!) {
+    expence(expenceId: $expenceId) {
       _id
       description
       paymentType
       category
       amount
       date
-      user {
-        name
-        username
-      }
     }
   }
 `;

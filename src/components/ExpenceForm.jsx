@@ -2,8 +2,9 @@ import React from "react";
 import { useMutation } from "@apollo/client";
 import { CREATE_EXPENCE } from "../graphql/mutations/expence.mutation";
 import toast from "react-hot-toast";
-
+import { useNavigate } from "react-router-dom";
 const ExpenceForm = () => {
+  const navigate = useNavigate();
   const [createExpence, { loading }] = useMutation(CREATE_EXPENCE);
 
   const handleSubmit = async (e) => {
@@ -28,6 +29,7 @@ const ExpenceForm = () => {
 
       form.reset();
       toast.success("Expence created successfully");
+      navigate("/");
     } catch (error) {
       toast.error(error.message);
     }

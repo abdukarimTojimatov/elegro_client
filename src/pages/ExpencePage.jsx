@@ -2,7 +2,7 @@ import React from "react";
 
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   GET_EXPENCE,
   GET_EXPENCES_STATISTICS,
@@ -13,10 +13,12 @@ import ExpenceFormSkeleton from "../skeletons/ExpenceFormSkeleton";
 
 const ExpencePage = () => {
   const { id } = useParams();
+  console.log("id", id);
+  const navigate = useNavigate();
   const { loading, data } = useQuery(GET_EXPENCE, {
-    variables: { id: id },
+    variables: { expenceId: id },
   });
-
+  console.log("data", data);
   const [updateExpence, { loading: loadingUpdate }] =
     useMutation(UPDATE_EXPENCE);
 
@@ -43,6 +45,7 @@ const ExpencePage = () => {
         refetchQueries: [{ query: GET_EXPENCES_STATISTICS }],
       });
       toast.success("Expences updated successfully");
+      navigate("/");
     } catch (error) {
       toast.error(error.message);
     }

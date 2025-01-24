@@ -1,7 +1,7 @@
 import React from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   GET_SHARING,
   GET_SHARINGS_STATISTICS,
@@ -12,6 +12,7 @@ import ExpenceFormSkeleton from "../skeletons/ExpenceFormSkeleton";
 
 const SharingEditPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { loading, data } = useQuery(GET_SHARING, {
     variables: { id: id },
   });
@@ -42,6 +43,7 @@ const SharingEditPage = () => {
         refetchQueries: [{ query: GET_SHARINGS_STATISTICS }],
       });
       toast.success("Sharing updated successfully");
+      navigate("/sharings");
     } catch (error) {
       toast.error(error.message);
     }

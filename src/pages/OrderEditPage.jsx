@@ -1,7 +1,7 @@
 import React from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { GET_ORDER } from "../graphql/queries/order.query"; // Adjust the path as necessary
 import { UPDATE_ORDER } from "../graphql/mutations/order.mutation"; // Adjust the path as necessary
 import OrderFormSkeleton from "../skeletons/OrderFormSkeleton"; // Adjust the path as necessary
@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 
 const OrderEditPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   console.log("id", id);
   const { loading, data } = useQuery(GET_ORDER, {
     variables: { orderId: id },
@@ -62,6 +63,7 @@ const OrderEditPage = () => {
       });
 
       toast.success("Order updated successfully");
+      navigate("/orders");
     } catch (error) {
       toast.error(error.message);
     }
