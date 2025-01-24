@@ -20,23 +20,23 @@ const SharingEditPage = () => {
     useMutation(UPDATE_SHARING);
 
   const [formData, setFormData] = useState({
-    description: data?.sharing?.description || "",
-    paymentType: data?.sharing?.paymentType || "",
-    category: data?.sharing?.category || "",
-    amount: data?.sharing?.amount || "",
-    date: data?.sharing?.date || "",
+    sharingDescription: data?.sharing?.sharingDescription || "",
+    sharingPaymentType: data?.sharing?.sharingPaymentType || "",
+    sharingCategoryType: data?.sharing?.sharingCategoryType || "",
+    sharingAmount: data?.sharing?.sharingAmount || "",
+    sharingDate: data?.sharing?.sharingDate || "",
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const amount = parseFloat(formData.amount);
+    const sharingAmount = parseFloat(formData.sharingAmount);
     try {
       await updateSharing({
         variables: {
           input: {
             ...formData,
-            amount,
-            ExpenceId: id,
+            sharingAmount,
+            sharingId: id,
           },
         },
         refetchQueries: [{ query: GET_SHARINGS_STATISTICS }],
@@ -58,11 +58,11 @@ const SharingEditPage = () => {
   useEffect(() => {
     if (data) {
       setFormData({
-        description: data?.sharing?.description,
-        paymentType: data?.sharing?.paymentType,
-        category: data?.sharing?.category,
-        amount: data?.sharing?.amount,
-        date: data?.sharing?.date,
+        sharingDescription: data?.sharing?.sharingDescription,
+        sharingPaymentType: data?.sharing?.sharingPaymentType,
+        sharingCategoryType: data?.sharing?.sharingCategoryType,
+        sharingAmount: parseFloat(data?.sharing?.sharingAmount),
+        sharingDate: data?.sharing?.sharingDate,
       });
     }
   }, [data]);
@@ -83,34 +83,34 @@ const SharingEditPage = () => {
           <div className="w-full flex-1 mb-6 md:mb-0">
             <label
               className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
-              htmlFor="description"
+              htmlFor="sharingDescription"
             >
               Xarajat izoh
             </label>
             <input
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="description"
-              name="description"
+              id="sharingDescription"
+              name="sharingDescription"
               type="text"
               placeholder="Rent, Groceries, Salary, etc."
-              value={formData.description}
+              value={formData.sharingDescription}
               onChange={handleInputChange}
             />
           </div>
           <div className="w-full flex-1 mb-6 md:mb-0">
             <label
               className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
-              htmlFor="paymentType"
+              htmlFor="sharingPaymentType"
             >
               To'lov turi
             </label>
             <div className="relative">
               <select
                 className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="paymentType"
-                name="paymentType"
+                id="sharingPaymentType"
+                name="sharingPaymentType"
                 onChange={handleInputChange}
-                defaultValue={formData.paymentType}
+                defaultValue={formData.sharingPaymentType}
               >
                 <option value={"plastik"}>plastik</option>
                 <option value={"naqd"}>naqd</option>
@@ -131,22 +131,21 @@ const SharingEditPage = () => {
         <div className="flex-1 mb-6 md:mb-0">
           <label
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
-            htmlFor="category"
+            htmlFor="sharingCategoryType"
           >
             Kategoriya
           </label>
           <div className="relative">
             <select
               className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="category"
-              name="category"
+              id="sharingCategoryType"
+              name="sharingCategoryType"
               onChange={handleInputChange}
-              defaultValue={formData.category}
+              defaultValue={formData.sharingCategoryType}
             >
-              <option value="Laminad">Laminad</option>
-              <option value="Mashina xarajatlari">Mashina xarajatlari</option>
-              <option value="Soliq">Soliq</option>
-              <option value="Elektr">Elektr</option>
+              <option value="Egamberdi">Egamberdi</option>
+              <option value="Elmurod">Elmurod</option>
+              <option value="Rozimuhammad">Rozimuhammad</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
@@ -168,17 +167,17 @@ const SharingEditPage = () => {
             <div className="flex-1 mb-6 md:mb-0">
               <label
                 className="block uppercase text-white text-xs font-bold mb-2"
-                htmlFor="amount"
+                htmlFor="sharingAmount"
               >
                 Miqdori (so'm)
               </label>
               <input
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="amount"
-                name="amount"
+                id="sharingAmount"
+                name="sharingAmount"
                 type="number"
                 placeholder="150"
-                value={formData.amount}
+                value={formData.sharingAmount}
                 onChange={handleInputChange}
               />
             </div>
@@ -187,18 +186,18 @@ const SharingEditPage = () => {
           <div className="flex-1">
             <label
               className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
-              htmlFor="date"
+              htmlFor="sharingDate"
             >
               Sana
             </label>
             <input
               type="date"
-              name="date"
-              id="date"
+              name="sharingDate"
+              id="sharingDate"
               className="appearance-none block w-full bg-gray-200 text-gray-700 border  rounded py-[11px] px-4 mb-3 leading-tight focus:outline-none
 						 focus:bg-white"
               placeholder="Sanani tanlang"
-              value={formData.date}
+              value={formData.sharingDate}
               onChange={handleInputChange}
             />
           </div>

@@ -7,7 +7,7 @@ import { UPDATE_ORDER } from "../graphql/mutations/order.mutation"; // Adjust th
 import OrderFormSkeleton from "../skeletons/OrderFormSkeleton"; // Adjust the path as necessary
 import toast from "react-hot-toast";
 
-const OneOrderPage = () => {
+const OrderEditPage = () => {
   const { id } = useParams();
   console.log("id", id);
   const { loading, data } = useQuery(GET_ORDER, {
@@ -484,4 +484,4 @@ const OneOrderPage = () => {
   );
 };
 
-export default OneOrderPage;
+export default OrderEditPage;

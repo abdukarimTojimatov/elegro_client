@@ -5,31 +5,17 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Toggle the dropdown visibility
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  // Close dropdown when navigating to another route
-  const closeDropdown = () => {
-    setIsDropdownOpen(false);
-  };
-
-  // Toggle mobile menu
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
     setIsDropdownOpen(false);
   };
 
-  // Close mobile menu when a link is clicked
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
     setIsDropdownOpen(false);
   };
 
-  // Navigation handler
   const handleNavigation = (path) => {
-    // You can replace this with your actual navigation logic
     window.location.href = path;
     closeMobileMenu();
   };
@@ -68,12 +54,12 @@ const Navbar = () => {
               >
                 Ulushlar
               </button>
-              <button
+              {/* <button
                 onClick={() => handleNavigation("/incomes")}
                 className="text-white hover:text-indigo-400 transition-colors duration-200"
               >
                 Incomes
-              </button>
+              </button> */}
               <button
                 onClick={() => handleNavigation("/orders")}
                 className="text-white hover:text-indigo-400 transition-colors duration-200"

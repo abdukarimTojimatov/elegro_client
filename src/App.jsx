@@ -7,7 +7,7 @@ import ExpencePage from "./pages/ExpencePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import CreateOrderPage from "./pages/CreateOrderPage";
 import OrdersPage from "./pages/OrdersPage";
-import OneOrderPage from "./pages/OneOrderPage";
+import OrderEditPage from "./pages/OrderEditPage";
 import Header from "./components/ui/Header";
 import Navbar from "./components/Navbar";
 import { useQuery } from "@apollo/client";
@@ -46,14 +46,16 @@ function App() {
           path="/expences/:id"
           element={data?.authUser ? <ExpencePage /> : <Navigate to="/login" />}
         />
-        {/* <Route
-          path="/expenses"
-          element={data?.authUser ? <ExpensesPage /> : <Navigate to="/login" />}
-        /> */}
-
-        <Route path="/sharings" element={<SharingPage />} />
-        <Route path="/sharings/:id" element={<SharingEditPage />} />
-
+        <Route
+          path="/sharings"
+          element={data?.authUser ? <SharingPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/sharings/:id"
+          element={
+            data?.authUser ? <SharingEditPage /> : <Navigate to="/login" />
+          }
+        />
         <Route
           path="/orders"
           element={data?.authUser ? <OrdersPage /> : <Navigate to="/login" />}
@@ -66,7 +68,9 @@ function App() {
         />
         <Route
           path="/orders/:id"
-          element={data?.authUser ? <OneOrderPage /> : <Navigate to="/login" />}
+          element={
+            data?.authUser ? <OrderEditPage /> : <Navigate to="/login" />
+          }
         />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
