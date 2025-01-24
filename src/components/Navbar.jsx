@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -16,7 +18,7 @@ const Navbar = () => {
   };
 
   const handleNavigation = (path) => {
-    window.location.href = path;
+    navigate(path); // Use navigate instead of window.location.href
     closeMobileMenu();
   };
 
@@ -54,12 +56,6 @@ const Navbar = () => {
               >
                 Ulushlar
               </button>
-              {/* <button
-                onClick={() => handleNavigation("/incomes")}
-                className="text-white hover:text-indigo-400 transition-colors duration-200"
-              >
-                Incomes
-              </button> */}
               <button
                 onClick={() => handleNavigation("/orders")}
                 className="text-white hover:text-indigo-400 transition-colors duration-200"
