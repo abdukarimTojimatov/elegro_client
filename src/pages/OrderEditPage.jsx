@@ -340,11 +340,12 @@ const OrderEditPage = () => {
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             id="orderTotalAmount"
             name="orderTotalAmount"
-            type="string"
+            type="text" // Change type to text for better compatibility
             required
             placeholder="Total Amount"
             value={formData.orderTotalAmount}
-            onChange={handleInputChange}
+            onChange={handleInputChange} // You can keep this if you want to handle changes, but it won't affect the input
+            readOnly // Add this attribute to make the input read-only
           />
         </div>
 

@@ -66,7 +66,7 @@ const OrdersPage = () => {
           key={order._id}
           className={`${getPaymentStatusColor(
             order.orderPaymentStatus
-          )} bg-black rounded-lg shadow-md hover:shadow-lg transition-shadow p-4`}
+          )} rounded-lg shadow-md hover:shadow-lg transition-shadow p-4`}
         >
           <div className="mt-3 space-y-2">
             <div className="text-sm">
@@ -101,6 +101,10 @@ const OrdersPage = () => {
             <div className="text-sm">
               <span className="font-semibold">Buyurtma turi: </span>
               {order.orderType}
+            </div>
+            <div className="text-sm">
+              <span className="font-semibold">To'lov holati: </span>
+              {order.orderPaymentStatus}
             </div>
             <div className="text-sm">
               <span className="font-semibold">Buyurtma holati: </span>
