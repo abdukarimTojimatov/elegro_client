@@ -10,13 +10,13 @@ export const GET_AUTHENTICATED_USER = gql`
   }
 `;
 
-export const GET_USER_AND_EXPENCES = gql`
-  query GetUserAndExpences($userId: ID!) {
+export const GET_USER_AND_EXPENSES = gql`
+  query GetUserAndExpenses($userId: ID!) {
     user(userId: $userId) {
       _id
       username
       phoneNumber
-      expences {
+      expenses {
         _id
         description
         paymentType

@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { formatDate } from "../utils/formatDate";
 import toast from "react-hot-toast";
 import { useMutation } from "@apollo/client";
-import { DELETE_EXPENCE } from "../graphql/mutations/expence.mutation";
+import { DELETE_EXPENSE } from "../graphql/mutations/expense.mutation";
 
 const categoryColorMap = {
   saving: "from-green-700 to-green-400",
@@ -18,10 +18,10 @@ const categoryColorMap = {
   // Add more categories and corresponding color classes as needed
 };
 
-const Card = ({ expence, authUser }) => {
-  let { category, amount, date, paymentType, description } = expence;
+const Card = ({ expense, authUser }) => {
+  let { category, amount, date, paymentType, description } = expense;
   const cardClass = categoryColorMap[category];
-  const [deleteExpence, { loading }] = useMutation(DELETE_EXPENCE);
+  const [deleteExpense, { loading }] = useMutation(DELETE_EXPENSE);
 
   // Capitalize the first letter of the description
   description = description[0]?.toUpperCase() + description.slice(1);
@@ -30,13 +30,14 @@ const Card = ({ expence, authUser }) => {
 
   const handleDelete = async () => {
     try {
-      await deleteExpence({
-        variables: { expenceId: expence._id },
-        refetchQueries: ["GetExpences", "GetExpencesStatistics"],
+      console.log("Expense ID:", expense._id);
+      await deleteExpense({
+        variables: { id: expense._id },
+        refetchQueries: ["GetExpenses", "GetExpensesStatistics"],
       });
-      toast.success("Expences deleted successfully");
+      toast.success("Expenses deleted successfully");
     } catch (error) {
-      console.error("Error deleting expences:", error);
+      console.error("Error deleting expenses:", error);
       toast.error(error.message);
     }
   };
@@ -55,7 +56,7 @@ const Card = ({ expence, authUser }) => {
             {loading && (
               <div className="w-6 h-6 border-t-2 border-b-2  rounded-full animate-spin"></div>
             )}
-            <Link to={`/expences/${expence._id}`}>
+            <Link to={`/expenses/${expense._id}`}>
               <HiPencilAlt className="cursor-pointer" size={20} />
             </Link>
           </div>

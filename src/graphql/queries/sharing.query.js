@@ -1,24 +1,30 @@
 import { gql } from "@apollo/client";
 
 export const GET_SHARINGS = gql`
-  query GetSharings {
-    sharings {
-      _id
-      userId
-      sharingDescription
-      sharingPaymentType
-      sharingCategoryType
-      sharingAmount
-      sharingDate
+  query GetSharings($page: Int, $limit: Int, $category: String) {
+    getSharings(page: $page, limit: $limit, category: $category) {
+      docs {
+        _id
+        sharingDescription
+        sharingPaymentType
+        sharingCategoryType
+        sharingAmount
+        sharingDate
+      }
+      totalDocs
+      limit
+      totalPages
+      page
+      hasPrevPage
+      hasNextPage
     }
   }
 `;
 
 export const GET_SHARING = gql`
   query GetSharing($id: ID!) {
-    sharing(sharingId: $id) {
+    getSharing(id: $id) {
       _id
-      userId
       sharingDescription
       sharingPaymentType
       sharingCategoryType
@@ -29,8 +35,8 @@ export const GET_SHARING = gql`
 `;
 
 export const GET_SHARINGS_STATISTICS = gql`
-  query GetSharingsStatistics {
-    categoryStatistics {
+  query CategoryStatisticsSharing {
+    categoryStatisticsSharing {
       category
       totalAmount
     }

@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import ExpencePage from "./pages/ExpencePage";
+import ExpensePage from "./pages/ExpensePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import CreateOrderPage from "./pages/CreateOrderPage";
 import OrdersPage from "./pages/OrdersPage";
@@ -43,8 +43,8 @@ function App() {
           element={!data?.authUser ? <SignUpPage /> : <Navigate to="/" />}
         />
         <Route
-          path="/expences/:id"
-          element={data?.authUser ? <ExpencePage /> : <Navigate to="/login" />}
+          path="/expenses/:id"
+          element={data?.authUser ? <ExpensePage /> : <Navigate to="/login" />}
         />
         <Route
           path="/sharings"

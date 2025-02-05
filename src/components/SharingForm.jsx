@@ -24,7 +24,7 @@ const SharingForm = () => {
     try {
       await createSharing({
         variables: { input: sharingData },
-        refetchQueries: ["GetSharings", "GetSharingsStatistics"],
+        refetchQueries: ["GetSharings", "CategoryStatisticsSharing"],
       });
 
       form.reset();

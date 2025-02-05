@@ -8,7 +8,7 @@ import {
 } from "../graphql/queries/sharing.query";
 import { UPDATE_SHARING } from "../graphql/mutations/sharing.mutation";
 import toast from "react-hot-toast";
-import ExpenceFormSkeleton from "../skeletons/ExpenceFormSkeleton";
+import ExpenseFormSkeleton from "../skeletons/ExpenseFormSkeleton";
 
 const SharingEditPage = () => {
   const { id } = useParams();
@@ -21,11 +21,11 @@ const SharingEditPage = () => {
     useMutation(UPDATE_SHARING);
 
   const [formData, setFormData] = useState({
-    sharingDescription: data?.sharing?.sharingDescription || "",
-    sharingPaymentType: data?.sharing?.sharingPaymentType || "",
-    sharingCategoryType: data?.sharing?.sharingCategoryType || "",
-    sharingAmount: data?.sharing?.sharingAmount || "",
-    sharingDate: data?.sharing?.sharingDate || "",
+    sharingDescription: data?.getSharing?.sharingDescription || "",
+    sharingPaymentType: data?.getSharing?.sharingPaymentType || "",
+    sharingCategoryType: data?.getSharing?.sharingCategoryType || "",
+    sharingAmount: data?.getSharing?.sharingAmount || "",
+    sharingDate: data?.getSharing?.sharingDate || "",
   });
 
   const handleSubmit = async (e) => {
@@ -37,7 +37,7 @@ const SharingEditPage = () => {
           input: {
             ...formData,
             sharingAmount,
-            sharingId: id,
+            _id: id,
           },
         },
         refetchQueries: [{ query: GET_SHARINGS_STATISTICS }],
@@ -60,16 +60,16 @@ const SharingEditPage = () => {
   useEffect(() => {
     if (data) {
       setFormData({
-        sharingDescription: data?.sharing?.sharingDescription,
-        sharingPaymentType: data?.sharing?.sharingPaymentType,
-        sharingCategoryType: data?.sharing?.sharingCategoryType,
-        sharingAmount: parseFloat(data?.sharing?.sharingAmount),
-        sharingDate: data?.sharing?.sharingDate,
+        sharingDescription: data?.getSharing?.sharingDescription,
+        sharingPaymentType: data?.getSharing?.sharingPaymentType,
+        sharingCategoryType: data?.getSharing?.sharingCategoryType,
+        sharingAmount: parseFloat(data?.getSharing?.sharingAmount),
+        sharingDate: data?.getSharing?.sharingDate,
       });
     }
   }, [data]);
 
-  if (loading) return <ExpenceFormSkeleton />;
+  if (loading) return <ExpenseFormSkeleton />;
 
   return (
     <div className="h-screen max-w-4xl mx-auto flex flex-col items-center">
@@ -211,7 +211,7 @@ const SharingEditPage = () => {
           type="submit"
           disabled={loadingUpdate}
         >
-          {loadingUpdate ? "Updating..." : "Update Expences"}
+          {loadingUpdate ? "Updating..." : "Update Expenses"}
         </button>
       </form>
     </div>

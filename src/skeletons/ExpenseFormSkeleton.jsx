@@ -1,6 +1,6 @@
 import React from "react";
 
-const ExpenceFormSkeleton = () => {
+const ExpenseFormSkeleton = () => {
   return (
     <div className="h-screen max-w-xl mx-auto py-10">
       <h3 className="h-6 bg-gray-200 rounded animate-pulse"></h3>
@@ -20,4 +20,4 @@ const ExpenceFormSkeleton = () => {
     </div>
   );
 };
-export default ExpenceFormSkeleton;
+export default ExpenseFormSkeleton;

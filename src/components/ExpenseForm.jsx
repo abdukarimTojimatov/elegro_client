@@ -1,11 +1,11 @@
 import React from "react";
 import { useMutation } from "@apollo/client";
-import { CREATE_EXPENCE } from "../graphql/mutations/expence.mutation";
+import { CREATE_EXPENSE } from "../graphql/mutations/expense.mutation";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-const ExpenceForm = () => {
+const ExpenseForm = () => {
   const navigate = useNavigate();
-  const [createExpence, { loading }] = useMutation(CREATE_EXPENCE);
+  const [createExpense, { loading }] = useMutation(CREATE_EXPENSE);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,7 +13,7 @@ const ExpenceForm = () => {
     const form = e.target;
     const formData = new FormData(form);
 
-    const expenceData = {
+    const expenseData = {
       description: formData.get("description"),
       paymentType: formData.get("paymentType"),
       category: formData.get("category"),
@@ -22,13 +22,13 @@ const ExpenceForm = () => {
     };
 
     try {
-      await createExpence({
-        variables: { input: expenceData },
-        refetchQueries: ["GetExpences", "GetExpencesStatistics"],
+      await createExpense({
+        variables: { input: expenseData },
+        refetchQueries: ["GetExpenses", "GetExpensesStatistics"],
       });
 
       form.reset();
-      toast.success("Expence created successfully");
+      toast.success("Expense created successfully");
       navigate("/");
     } catch (error) {
       toast.error(error.message);
@@ -148,4 +148,4 @@ const ExpenceForm = () => {
   );
 };
 
-export default ExpenceForm;
+export default ExpenseForm;

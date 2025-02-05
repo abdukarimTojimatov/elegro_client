@@ -4,7 +4,6 @@ export const CREATE_SHARING = gql`
   mutation CreateSharing($input: CreateSharingInput!) {
     createSharing(input: $input) {
       _id
-      userId
       sharingDescription
       sharingPaymentType
       sharingCategoryType
@@ -18,7 +17,6 @@ export const UPDATE_SHARING = gql`
   mutation UpdateSharing($input: UpdateSharingInput!) {
     updateSharing(input: $input) {
       _id
-      userId
       sharingDescription
       sharingPaymentType
       sharingCategoryType
@@ -32,7 +30,6 @@ export const DELETE_SHARING = gql`
   mutation DeleteSharing($sharingId: ID!) {
     deleteSharing(sharingId: $sharingId) {
       _id
-      userId
       sharingDescription
       sharingPaymentType
       sharingCategoryType

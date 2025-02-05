@@ -2,19 +2,19 @@ import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import Cards from "../components/Cards";
-import ExpenceForm from "../components/ExpenceForm";
+import ExpenseForm from "../components/ExpenseForm";
 import { MdLogout } from "react-icons/md";
 import toast from "react-hot-toast";
 import { useMutation, useQuery } from "@apollo/client";
 import { LOGOUT } from "../graphql/mutations/user.mutation";
-import { GET_EXPENCES_STATISTICS } from "../graphql/queries/expence.query";
+import { GET_EXPENSES_STATISTICS } from "../graphql/queries/expense.query";
 import { GET_AUTHENTICATED_USER } from "../graphql/queries/user.query";
 import { useEffect, useState } from "react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const HomePage = () => {
-  const { data } = useQuery(GET_EXPENCES_STATISTICS);
+  const { data } = useQuery(GET_EXPENSES_STATISTICS);
   const { data: authUserData } = useQuery(GET_AUTHENTICATED_USER);
   const [logout, { loading, client }] = useMutation(LOGOUT);
   const [chartData, setChartData] = useState({
@@ -113,7 +113,7 @@ const HomePage = () => {
               <Doughnut data={chartData} />
             </div>
           )}
-          <ExpenceForm />
+          <ExpenseForm />
         </div>
         <Cards />
       </div>

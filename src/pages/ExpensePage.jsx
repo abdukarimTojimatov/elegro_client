@@ -4,47 +4,47 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  GET_EXPENCE,
-  GET_EXPENCES_STATISTICS,
-} from "../graphql/queries/expence.query";
-import { UPDATE_EXPENCE } from "../graphql/mutations/expence.mutation";
+  GET_EXPENSE,
+  GET_EXPENSES_STATISTICS,
+} from "../graphql/queries/expense.query";
+import { UPDATE_EXPENSE } from "../graphql/mutations/expense.mutation";
 import toast from "react-hot-toast";
-import ExpenceFormSkeleton from "../skeletons/ExpenceFormSkeleton";
+import ExpenseFormSkeleton from "../skeletons/ExpenseFormSkeleton";
 
-const ExpencePage = () => {
+const ExpensePage = () => {
   const { id } = useParams();
   console.log("id", id);
   const navigate = useNavigate();
-  const { loading, data } = useQuery(GET_EXPENCE, {
-    variables: { expenceId: id },
+  const { loading, data } = useQuery(GET_EXPENSE, {
+    variables: { id: id },
   });
   console.log("data", data);
-  const [updateExpence, { loading: loadingUpdate }] =
-    useMutation(UPDATE_EXPENCE);
+  const [updateExpense, { loading: loadingUpdate }] =
+    useMutation(UPDATE_EXPENSE);
 
   const [formData, setFormData] = useState({
-    description: data?.expence?.description || "",
-    paymentType: data?.expence?.paymentType || "",
-    category: data?.expence?.category || "",
-    amount: data?.expence?.amount || "",
-    date: data?.expence?.date || "",
+    description: data?.getExpense?.description || "",
+    paymentType: data?.getExpense?.paymentType || "",
+    category: data?.getExpense?.category || "",
+    amount: data?.getExpense?.amount || "",
+    date: data?.getExpense?.date || "",
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const amount = parseFloat(formData.amount);
     try {
-      await updateExpence({
+      await updateExpense({
         variables: {
           input: {
             ...formData,
             amount,
-            ExpenceId: id,
+            _id: id,
           },
         },
-        refetchQueries: [{ query: GET_EXPENCES_STATISTICS }],
+        refetchQueries: [{ query: GET_EXPENSES_STATISTICS }],
       });
-      toast.success("Expences updated successfully");
+      toast.success("Expenses updated successfully");
       navigate("/");
     } catch (error) {
       toast.error(error.message);
@@ -62,16 +62,16 @@ const ExpencePage = () => {
   useEffect(() => {
     if (data) {
       setFormData({
-        description: data?.expence?.description,
-        paymentType: data?.expence?.paymentType,
-        category: data?.expence?.category,
-        amount: data?.expence?.amount,
-        date: data?.expence?.date,
+        description: data?.getExpense?.description,
+        paymentType: data?.getExpense?.paymentType,
+        category: data?.getExpense?.category,
+        amount: data?.getExpense?.amount,
+        date: data?.getExpense?.date,
       });
     }
   }, [data]);
 
-  if (loading) return <ExpenceFormSkeleton />;
+  if (loading) return <ExpenseFormSkeleton />;
 
   return (
     <div className="h-screen max-w-4xl mx-auto flex flex-col items-center">
@@ -82,7 +82,7 @@ const ExpencePage = () => {
         className="w-full max-w-lg flex flex-col md:flex-col sm:flex-col  gap-5 px-3 "
         onSubmit={handleSubmit}
       >
-        {/* EXPENCES */}
+        {/* EXpenseS */}
         <div className="flex flex-wrap gap-3">
           <div className="w-full flex-1 mb-6 md:mb-0">
             <label
@@ -214,10 +214,10 @@ const ExpencePage = () => {
           type="submit"
           disabled={loadingUpdate}
         >
-          {loadingUpdate ? "Updating..." : "Update Expences"}
+          {loadingUpdate ? "Updating..." : "Update Expenses"}
         </button>
       </form>
     </div>
   );
 };
-export default ExpencePage;
+export default ExpensePage;
