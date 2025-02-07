@@ -1,39 +1,61 @@
 import { gql } from "@apollo/client";
 
 export const GET_ORDERS = gql`
-  query Orders {
-    orders {
-      _id
-      userId
-      orderAutoNumber
-      orderName
-      orderCustomerName
-      orderCustomerPhoneNumber
-      orderDescription
-      orderCategory
-      orderType
-      orderPaymentStatus
-      orderTotalAmount
-      orderExpensesAmount
-      orderTotalPaid
-      orderTotalDebt
-      orderStatus
-      orderExpensesDescription
-      orderLocation
-      orderReadyDate
-      date
-      orderPayments {
-        paymentType
-        amount
+  query GetOrders(
+    $page: Int
+    $limit: Int
+    $orderCategory: String
+    $orderStatus: String
+    $orderType: String
+    $orderPaymentStatus: String
+  ) {
+    getOrders(
+      page: $page
+      limit: $limit
+      orderCategory: $orderCategory
+      orderStatus: $orderStatus
+      orderType: $orderType
+      orderPaymentStatus: $orderPaymentStatus
+    ) {
+      docs {
+        _id
+        userId
+        orderAutoNumber
+        orderName
+        orderCustomerName
+        orderCustomerPhoneNumber
+        orderDescription
+        orderCategory
+        orderType
+        orderPaymentStatus
+        orderTotalAmount
+        orderExpensesAmount
+        orderTotalPaid
+        orderTotalDebt
+        orderStatus
+        orderExpensesDescription
+        orderLocation
+        orderReadyDate
         date
+        orderPayments {
+          paymentType
+          amount
+          date
+        }
       }
+      totalDocs
+      limit
+      totalPages
+      page
+      hasPrevPage
+      hasNextPage
     }
   }
 `;
 
 export const GET_ORDER = gql`
-  query Order($orderId: ID!) {
-    order(orderId: $orderId) {
+  query GetOrder($id: ID!) {
+    getOrder(id: $id) {
       _id
       userId
       orderAutoNumber

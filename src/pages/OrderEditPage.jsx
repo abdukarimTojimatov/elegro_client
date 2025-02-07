@@ -12,27 +12,27 @@ const OrderEditPage = () => {
   const navigate = useNavigate();
   console.log("id", id);
   const { loading, data } = useQuery(GET_ORDER, {
-    variables: { orderId: id },
+    variables: { id: id },
   });
 
   const [updateOrder, { loading: loadingUpdate }] = useMutation(UPDATE_ORDER);
 
   const [formData, setFormData] = useState({
-    orderName: data?.order?.orderName || "",
-    orderCustomerName: data?.order?.orderCustomerName || "",
-    orderCustomerPhoneNumber: data?.order?.orderCustomerPhoneNumber || "",
-    orderDescription: data?.order?.orderDescription || "",
-    orderCategory: data?.order?.orderCategory || "",
-    orderType: data?.order?.orderType || "",
-    orderStatus: data?.order?.orderStatus || "",
-    orderPaymentStatus: data?.order?.orderPaymentStatus || "unpaid",
-    orderTotalAmount: data?.order?.orderTotalAmount || "",
-    orderExpensesAmount: data?.order?.orderExpensesAmount || "",
-    orderTotalPaid: data?.order?.orderTotalPaid || "",
-    orderTotalDebt: data?.order?.orderTotalDebt || "",
-    orderExpensesDescription: data?.order?.orderExpensesDescription || "",
-    orderLocation: data?.order?.orderLocation || "",
-    orderPayments: data?.order?.orderPayments || [],
+    orderName: data?.getOrder?.orderName || "",
+    orderCustomerName: data?.getOrder?.orderCustomerName || "",
+    orderCustomerPhoneNumber: data?.getOrder?.orderCustomerPhoneNumber || "",
+    orderDescription: data?.getOrder?.orderDescription || "",
+    orderCategory: data?.getOrder?.orderCategory || "",
+    orderType: data?.getOrder?.orderType || "",
+    orderStatus: data?.getOrder?.orderStatus || "",
+    orderPaymentStatus: data?.getOrder?.orderPaymentStatus || "unpaid",
+    orderTotalAmount: data?.getOrder?.orderTotalAmount || "",
+    orderExpensesAmount: data?.getOrder?.orderExpensesAmount || "",
+    orderTotalPaid: data?.getOrder?.orderTotalPaid || "",
+    orderTotalDebt: data?.getOrder?.orderTotalDebt || "",
+    orderExpensesDescription: data?.getOrder?.orderExpensesDescription || "",
+    orderLocation: data?.getOrder?.orderLocation || "",
+    orderPayments: data?.getOrder?.orderPayments || [],
   });
 
   const handleSubmit = async (e) => {
@@ -51,12 +51,12 @@ const OrderEditPage = () => {
           })
         ),
       };
-
+      console.log("formData", { ...formattedData, _id: id });
       await updateOrder({
         variables: {
           input: {
             ...formattedData,
-            orderId: id,
+            _id: id,
           },
           refetchQueries: [{ query: GET_ORDER }],
         },
@@ -104,21 +104,21 @@ const OrderEditPage = () => {
   useEffect(() => {
     if (data) {
       setFormData({
-        orderName: data?.order?.orderName,
-        orderCustomerName: data?.order?.orderCustomerName,
-        orderCustomerPhoneNumber: data?.order?.orderCustomerPhoneNumber,
-        orderDescription: data?.order?.orderDescription,
-        orderCategory: data?.order?.orderCategory,
-        orderType: data?.order?.orderType,
-        orderPaymentStatus: data?.order?.orderPaymentStatus,
-        orderStatus: data?.order?.orderStatus,
-        orderTotalAmount: data?.order?.orderTotalAmount,
-        orderExpensesAmount: data?.order?.orderExpensesAmount,
-        orderTotalPaid: data?.order?.orderTotalPaid,
-        orderTotalDebt: data?.order?.orderTotalDebt,
-        orderExpensesDescription: data?.order?.orderExpensesDescription,
-        orderLocation: data?.order?.orderLocation,
-        orderPayments: data?.order?.orderPayments || [],
+        orderName: data?.getOrder?.orderName,
+        orderCustomerName: data?.getOrder?.orderCustomerName,
+        orderCustomerPhoneNumber: data?.getOrder?.orderCustomerPhoneNumber,
+        orderDescription: data?.getOrder?.orderDescription,
+        orderCategory: data?.getOrder?.orderCategory,
+        orderType: data?.getOrder?.orderType,
+        orderPaymentStatus: data?.getOrder?.orderPaymentStatus,
+        orderStatus: data?.getOrder?.orderStatus,
+        orderTotalAmount: data?.getOrder?.orderTotalAmount,
+        orderExpensesAmount: data?.getOrder?.orderExpensesAmount,
+        orderTotalPaid: data?.getOrder?.orderTotalPaid,
+        orderTotalDebt: data?.getOrder?.orderTotalDebt,
+        orderExpensesDescription: data?.getOrder?.orderExpensesDescription,
+        orderLocation: data?.getOrder?.orderLocation,
+        orderPayments: data?.getOrder?.orderPayments || [],
       });
     }
   }, [data]);
@@ -345,7 +345,7 @@ const OrderEditPage = () => {
             placeholder="Total Amount"
             value={formData.orderTotalAmount}
             onChange={handleInputChange} // You can keep this if you want to handle changes, but it won't affect the input
-            readOnly // Add this attribute to make the input read-only
+            // Add this attribute to make the input read-only
           />
         </div>
 
@@ -384,6 +384,7 @@ const OrderEditPage = () => {
             placeholder="Total Paid"
             value={formData.orderTotalPaid}
             onChange={handleInputChange}
+            readOnly
           />
         </div>
 
@@ -403,6 +404,7 @@ const OrderEditPage = () => {
             placeholder="Total Debt"
             value={formData.orderTotalDebt}
             onChange={handleInputChange}
+            readOnly
           />
         </div>
 

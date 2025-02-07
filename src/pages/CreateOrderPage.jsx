@@ -13,15 +13,11 @@ const CreateOrderPage = () => {
     orderDescription: "",
     orderCategory: "",
     orderType: "",
-    orderPaymentStatus: "tolanmadi", // Default payment status
     orderTotalAmount: "",
     orderExpensesAmount: "",
-    orderTotalPaid: 0,
-    orderTotalDebt: 0,
     orderExpensesDescription: "",
     orderLocation: "",
     orderReadyDate: "",
-    orderPayments: [],
   });
 
   const [createOrder, { loading }] = useMutation(CREATE_ORDER, {
@@ -34,15 +30,11 @@ const CreateOrderPage = () => {
         orderDescription: "",
         orderCategory: "",
         orderType: "",
-        orderPaymentStatus: "tolanmadi",
-        orderTotalAmount: 0,
-        orderExpensesAmount: 0,
-        orderTotalPaid: 0,
-        orderTotalDebt: 0,
+        orderTotalAmount: "",
+        orderExpensesAmount: "",
         orderExpensesDescription: "",
         orderLocation: "",
         orderReadyDate: "",
-        orderPayments: [], // Reset to default payment object
       });
     },
     onError: (error) => {
@@ -62,9 +54,10 @@ const CreateOrderPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log("order", orderData);
       await createOrder({
         variables: { input: orderData },
-        refetchQueries: ["Orders"],
+        refetchQueries: ["GetOrders"],
       });
       navigate("/orders");
     } catch (error) {

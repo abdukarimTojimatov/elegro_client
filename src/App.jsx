@@ -8,6 +8,9 @@ import NotFoundPage from "./pages/NotFoundPage";
 import CreateOrderPage from "./pages/CreateOrderPage";
 import OrdersPage from "./pages/OrdersPage";
 import OrderEditPage from "./pages/OrderEditPage";
+import EditRawMaterialPage from "./pages/EditRawMaterialPage";
+import CreateRawMaterialPage from "./pages/CreateRawMaterialPage";
+import RawMaterialsPage from "./pages/RawMaterialPage";
 import Header from "./components/ui/Header";
 import Navbar from "./components/Navbar";
 import { useQuery } from "@apollo/client";
@@ -70,6 +73,28 @@ function App() {
           path="/orders/:id"
           element={
             data?.authUser ? <OrderEditPage /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/rawMaterial/:id"
+          element={
+            data?.authUser ? <EditRawMaterialPage /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/rawMaterial"
+          element={
+            data?.authUser ? <RawMaterialsPage /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/rawMaterial/create"
+          element={
+            data?.authUser ? (
+              <CreateRawMaterialPage />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
         <Route path="*" element={<NotFoundPage />} />

@@ -68,6 +68,12 @@ const Navbar = () => {
               >
                 Buyurtmalar Yaratish
               </button>
+              <button
+                onClick={() => handleNavigation("/rawMaterial")}
+                className="text-white hover:text-indigo-400 transition-colors duration-200"
+              >
+                Homashyolar
+              </button>
             </div>
           </div>
         </div>
@@ -109,6 +115,14 @@ const Navbar = () => {
                 }`}
               >
                 Buyurtma Yaratish
+              </button>
+              <button
+                onClick={() => handleNavigation("/rawMaterial")}
+                className={`text-white text-lg hover:text-indigo-300 ${
+                  isDropdownOpen ? "border-b-2 border-indigo-500" : ""
+                }`}
+              >
+                Homashyolar
               </button>
             </div>
           </div>

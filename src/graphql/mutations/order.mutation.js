@@ -63,8 +63,8 @@ export const UPDATE_ORDER = gql`
 `;
 
 export const DELETE_ORDER = gql`
-  mutation DeleteOrder($orderId: ID!) {
-    deleteOrder(orderId: $orderId) {
+  mutation DeleteOrder($id: ID!) {
+    deleteOrder(id: $id) {
       _id
     }
   }
