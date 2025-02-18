@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaTrash } from "react-icons/fa";
+
 import { useMutation } from "@apollo/client";
 import { DELETE_RAW_MATERIAL } from "../graphql/mutations/rawMaterial.mutation"; // Import the delete mutation
 import toast from "react-hot-toast";
-
+import { FaTrash, FaEdit } from "react-icons/fa";
 const RawMaterialCard = ({ rawMaterial }) => {
   const [deleteRawMaterial, { loading }] = useMutation(DELETE_RAW_MATERIAL);
 
@@ -25,31 +25,54 @@ const RawMaterialCard = ({ rawMaterial }) => {
     <div
       className={"rounded-md p-4 bg-gradient-to-br from-green-700 to-green-400"}
     >
-      <h3 className="text-lg font-bold text-white">
-        {rawMaterial.rawMaterialName}
-      </h3>
-      <p className="text-white">
-        Description: {rawMaterial.rawMaterialDescription}
-      </p>
-      <p className="text-white">Quantity: {rawMaterial.rawMaterialQuantity}</p>
-      <p className="text-white">
-        Price: {rawMaterial.rawMaterialPrice.toLocaleString("uz-UZ")} so'm
-      </p>
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex space-x-2 justify-end">
+        <FaTrash
+          onClick={() => handleDelete(rawMaterial._id)}
+          className="cursor-pointer hover:text-red-200"
+        />
         <Link to={`/rawMaterial/${rawMaterial._id}`}>
-          <button className="text-white hover:text-indigo-300">Edit</button>
+          <FaEdit className="cursor-pointer hover:text-blue-200" />
         </Link>
-        {!loading ? (
-          <button
-            onClick={handleDelete}
-            className="text-white hover:text-red-500"
-          >
-            <FaTrash /> Delete
-          </button>
-        ) : (
-          <div className="w-6 h-6 border-t-2 border-b-2 rounded-full animate-spin"></div>
-        )}
       </div>
+      <p className="text-white">
+        {rawMaterial.rawMaterialCategory} nomi: {rawMaterial.rawMaterialName}
+      </p>
+      <p className="text-white">Izoh: {rawMaterial.rawMaterialDescription}</p>
+      <p className="text-white">
+        Jami miqdori:
+        <span className="ml-2">{rawMaterial.rawMaterialQuantity}</span>
+        {rawMaterial.unitOfMeasurement}
+      </p>
+      <p className="text-white">
+        1 {rawMaterial.unitOfMeasurement} narxi:
+        <span className="ml-2">
+          {rawMaterial.rawMaterialPrice.toLocaleString("uz-UZ")} so'm
+        </span>
+      </p>
+      <p className="text-white">
+        Jami narxi: {rawMaterial.rawMaterialTotalPrice.toLocaleString("uz-UZ")}
+        so'm
+      </p>
+      <p className="text-white">
+        Jami to'landi:
+        {rawMaterial.totalPaid.toLocaleString("uz-UZ")} so'm
+      </p>
+      <p className="text-white">
+        Jami qarz:
+        {rawMaterial.totalDebt.toLocaleString("uz-UZ")} so'm
+      </p>
+      <p className="text-white">
+        Taminotchi:
+        {rawMaterial.customerName}
+      </p>
+      <p className="text-white">
+        Taminotchi raqami:
+        {rawMaterial.phoneNumber}
+      </p>
+      <p className="text-white">
+        To'lov holati:
+        {rawMaterial.paymentStatus === false ? "qarz mavjud" : "to'langan"}
+      </p>
     </div>
   );
 };

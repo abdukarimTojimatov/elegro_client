@@ -62,12 +62,12 @@ const Navbar = () => {
               >
                 Buyurtma
               </button>
-              <button
+              {/* <button
                 onClick={() => handleNavigation("/orders/create")}
                 className="text-white hover:text-indigo-400 transition-colors duration-200"
               >
                 Buyurtmalar Yaratish
-              </button>
+              </button> */}
               <button
                 onClick={() => handleNavigation("/rawMaterial")}
                 className="text-white hover:text-indigo-400 transition-colors duration-200"
@@ -108,14 +108,14 @@ const Navbar = () => {
               >
                 Buyurtma
               </button>
-              <button
+              {/* <button
                 onClick={() => handleNavigation("/orders/create")}
                 className={`text-white text-lg hover:text-indigo-300 ${
                   isDropdownOpen ? "border-b-2 border-indigo-500" : ""
                 }`}
               >
                 Buyurtma Yaratish
-              </button>
+              </button> */}
               <button
                 onClick={() => handleNavigation("/rawMaterial")}
                 className={`text-white text-lg hover:text-indigo-300 ${

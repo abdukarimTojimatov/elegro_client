@@ -238,14 +238,28 @@ const CreateOrderPage = () => {
           className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           id="orderExpensesAmount"
           name="orderExpensesAmount"
-          type="string" // Change type to number for numeric input
+          type="string"
           required
           placeholder="Harajatlar summasi"
           value={orderData.orderExpensesAmount}
           onChange={handleChange}
         />
       </div>
-
+      <div className="flex-1 min-w-[250px]">
+        <label
+          className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
+          htmlFor="orderReadyDate"
+        >
+          Buyurtma yetkazish vaqti
+        </label>
+        <input
+          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          name="orderReadyDate"
+          type="date"
+          value={orderData.orderReadyDate}
+          onChange={handleChange}
+        />
+      </div>
       {/* DESCRIPTION */}
       <div className="flex-1 min-w-[250px]">
         <label
@@ -287,21 +301,7 @@ const CreateOrderPage = () => {
           style={{ maxHeight: "200px", overflowY: "auto" }} // Set max height and enable vertical scrolling
         />
       </div>
-      <div className="flex-1 min-w-[250px]">
-        <label
-          className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
-          htmlFor="orderReadyDate"
-        >
-          Buyurtma yetkazish vaqti
-        </label>
-        <input
-          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-          name="orderReadyDate"
-          type="date"
-          value={orderData.orderReadyDate}
-          onChange={handleChange}
-        />
-      </div>
+
       {/* SUBMIT BUTTON */}
       <button
         className="text-white font-bold w-full rounded px-4 py-2 bg-gradient-to-br from-pink-500 to-pink-500 hover:from-pink-600 hover:to-pink-600"
