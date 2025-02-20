@@ -45,6 +45,11 @@ export const GET_RAW_MATERIAL = gql`
       totalPaid
       totalDebt
       date
+      payments {
+        paymentType
+        amount
+        date
+      }
       paymentStatus
     }
   }

@@ -98,7 +98,7 @@ const OrdersPage = () => {
     switch (status.toLowerCase()) {
       case "tolandi":
         return "bg-gradient-to-r from-green-700 to-green-400";
-      case "qismanTolandi":
+      case "qismantolandi":
         return "bg-gradient-to-r from-pink-800 to-pink-500";
       case "tolanmadi":
         return "bg-gradient-to-r from-blue-700 to-blue-500";

@@ -30,8 +30,7 @@ const EditRawMaterialPage = () => {
   useEffect(() => {
     console.log("data", data);
     if (data?.getRawMaterial) {
-      // Ensure payments is an array when setting data from the query
-      const rawMaterial = data.getRawMaterial;
+      const { __typename, ...rawMaterial } = data.getRawMaterial; // Exclude __typename
       setFormData({
         ...rawMaterial,
       });
@@ -52,8 +51,14 @@ const EditRawMaterialPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      let inputData = { ...formData };
+      inputData.payments = inputData.payments.map((payment) => {
+        const { __typename, ...rest } = payment; // Exclude __typename
+        return rest; // Return the rest of the payment object
+      });
+      console.log("inputData", inputData);
       await updateRawMaterial({
-        variables: { id, input: formData },
+        variables: { id, input: inputData },
       });
       toast.success("Raw material updated successfully");
       navigate("/rawMaterial");
@@ -61,7 +66,6 @@ const EditRawMaterialPage = () => {
       toast.error(error.message);
     }
   };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -261,7 +265,7 @@ const EditRawMaterialPage = () => {
         {/* Payments Section */}
         <div className="w-full">
           <h3 className="text-white font-bold text-lg mb-4">To'lovlar</h3>
-          {formData.payments.length > 0 ? (
+          {formData?.payments?.length > 0 ? (
             formData.payments.map((payment, index) => (
               <div
                 key={index}

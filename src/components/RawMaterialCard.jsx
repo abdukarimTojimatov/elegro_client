@@ -50,7 +50,8 @@ const RawMaterialCard = ({ rawMaterial }) => {
         </span>
       </p>
       <p className="text-white">
-        Jami narxi: {rawMaterial.rawMaterialTotalPrice.toLocaleString("uz-UZ")}
+        Jami narxi:{" "}
+        {rawMaterial?.rawMaterialTotalPrice?.toLocaleString("uz-UZ")}
         so'm
       </p>
       <p className="text-white">
