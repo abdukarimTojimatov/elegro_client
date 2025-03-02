@@ -2,6 +2,8 @@ import React from "react";
 import { useMutation } from "@apollo/client";
 import { CREATE_EXPENSE } from "../graphql/mutations/expense.mutation";
 import toast from "react-hot-toast";
+import expenceCategories from "../constants/expenceCategories"; // Import categories
+
 import { useNavigate } from "react-router-dom";
 const ExpenseForm = () => {
   const navigate = useNavigate();
@@ -91,10 +93,11 @@ const ExpenseForm = () => {
             id="category"
             name="category"
           >
-            <option value="Laminad">Laminad</option>
-            <option value="Mashina xarajatlari">Mashina xarajatlari</option>
-            <option value="Soliq">Soliq</option>
-            <option value="Elektr">Elektr</option>
+            {expenceCategories?.map((cat) => (
+              <option key={cat.value} value={cat.value}>
+                {cat.label}
+              </option>
+            ))}
           </select>
         </div>
       </div>

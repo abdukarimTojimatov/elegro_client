@@ -10,6 +10,10 @@ export const GET_EXPENSES = gql`
         category
         amount
         date
+        userId {
+          _id
+          username
+        }
       }
       totalDocs
       limit

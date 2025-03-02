@@ -77,7 +77,6 @@ const OrdersPage = () => {
         </button>
       );
     }
-
     return pageNumbers;
   };
 

@@ -1,5 +1,5 @@
 import React from "react";
-
+import expenceCategories from "../constants/expenceCategories"; // Import categories
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -13,12 +13,12 @@ import ExpenseFormSkeleton from "../skeletons/ExpenseFormSkeleton";
 
 const ExpensePage = () => {
   const { id } = useParams();
-  console.log("id", id);
+
   const navigate = useNavigate();
   const { loading, data } = useQuery(GET_EXPENSE, {
     variables: { id: id },
   });
-  console.log("data", data);
+
   const [updateExpense, { loading: loadingUpdate }] =
     useMutation(UPDATE_EXPENSE);
 
@@ -131,7 +131,6 @@ const ExpensePage = () => {
             </div>
           </div>
         </div>
-        {/* PAYMENT TYPE */}
         <div className="flex-1 mb-6 md:mb-0">
           <label
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
@@ -147,10 +146,11 @@ const ExpensePage = () => {
               onChange={handleInputChange}
               defaultValue={formData.category}
             >
-              <option value="Laminad">Laminad</option>
-              <option value="Mashina xarajatlari">Mashina xarajatlari</option>
-              <option value="Soliq">Soliq</option>
-              <option value="Elektr">Elektr</option>
+              {expenceCategories?.map((cat) => (
+                <option key={cat.value} value={cat.value}>
+                  {cat.label}
+                </option>
+              ))}
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
@@ -164,9 +164,6 @@ const ExpensePage = () => {
           </div>
         </div>
         <div className="flex flex-wrap gap-3">
-          {/* CATEGORY */}
-
-          {/* LOCATION */}
           <div className="flex flex-col sm:flex-row gap-4">
             {/* AMOUNT */}
             <div className="flex-1 mb-6 md:mb-0">

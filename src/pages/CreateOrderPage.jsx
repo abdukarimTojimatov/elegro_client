@@ -41,6 +41,7 @@ const CreateOrderPage = () => {
       toast.error(error.message);
     },
   });
+
   const numericFields = ["orderTotalAmount", "orderExpensesAmount"];
 
   const handleChange = (e) => {

@@ -19,7 +19,7 @@ const categoryColorMap = {
 };
 
 const Card = ({ expense, authUser }) => {
-  let { category, amount, date, paymentType, description } = expense;
+  let { category, amount, date, paymentType, description, userId } = expense;
   const cardClass = categoryColorMap[category];
   const [deleteExpense, { loading }] = useMutation(DELETE_EXPENSE);
 
@@ -48,7 +48,7 @@ const Card = ({ expense, authUser }) => {
     >
       <div className="flex flex-col gap-3">
         <div className="flex flex-row items-center justify-between">
-          <h2 className="text-lg font-bold text-white">{category}</h2>
+          <h2 className="text-lg font-bold text-white bold">{category}</h2>
           <div className="flex items-center gap-2">
             {!loading && (
               <FaTrash className={"cursor-pointer"} onClick={handleDelete} />
@@ -63,24 +63,25 @@ const Card = ({ expense, authUser }) => {
         </div>
         <p className="text-white flex items-center gap-1">
           <BsCardText />
-          Xarajat haqida: {description}
+          Xarajat haqida:
+          <span className="font-bold text-white-400">{description}</span>
         </p>
         <p className="text-white flex items-center gap-1">
           <MdOutlinePayments />
-          To'lov turi: {paymentType}
+          To'lov turi:{" "}
+          <span className="font-bold text-white-800">{paymentType}</span>
         </p>
         <p className="text-white flex items-center gap-1">
           <FaSackDollar />
-          Miqdori: {amount.toLocaleString("uz-UZ")} so'm
+          Miqdori:{" "}
+          <span className="font-bold text-white-800">
+            {amount.toLocaleString("uz-UZ")}
+          </span>{" "}
+          so'm
         </p>
 
         <div className="flex justify-between items-center">
-          <p className="text-xs text-black font-bold">{date}</p>
-          <img
-            src={authUser?.profilePicture}
-            className="h-8 w-8 border rounded-full"
-            alt=""
-          />
+          <p className="text-xs text-white font-bold">{userId?.username}</p>
         </div>
       </div>
     </div>
