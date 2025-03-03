@@ -66,7 +66,7 @@ const Cards = () => {
 
   return (
     <div className="w-full px-10 min-h-[40vh]">
-      <p className="text-5xl font-bold text-center my-10">Barcha harajatlar</p>
+      <p className="text-3xl font-bold text-center my-10">Barcha harajatlar</p>
 
       {/* Only show filters and pagination if there are expenses */}
       {!hasNoExpenses && (
