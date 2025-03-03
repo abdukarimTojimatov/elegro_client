@@ -24,6 +24,10 @@ const Cards = () => {
     }
   };
 
+  const handlePageClick = (pageNumber) => {
+    setPage(pageNumber);
+  };
+
   const handleLimitChange = (event) => {
     setLimit(Number(event.target.value));
     setPage(1); // Reset to first page when limit changes
@@ -55,65 +59,87 @@ const Cards = () => {
     return pageNumbers;
   };
 
+  // Check if there are no expenses
+  const hasNoExpenses =
+    !loading &&
+    (!data?.getExpenses?.docs || data?.getExpenses?.docs.length === 0);
+
   return (
     <div className="w-full px-10 min-h-[40vh]">
       <p className="text-5xl font-bold text-center my-10">Barcha harajatlar</p>
-      <div className="flex justify-between mb-4">
-        <select
-          onChange={handleCategoryChange}
-          value={category}
-          className="border rounded p-2 text-black"
-        >
-          {expenceCategories.map((cat) => (
-            <option key={cat.value} value={cat.value}>
-              {cat.label}
-            </option>
-          ))}
-        </select>
-        <select
-          onChange={handleLimitChange}
-          value={limit}
-          className="border rounded p-2 text-black"
-        >
-          <option value={1}>1</option>
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={50}>50</option>
-        </select>
-        <p className="text-lg">
-          Sahifa {page} of {data?.getExpenses?.totalPages || 1}
-        </p>
-      </div>
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-start mb-20">
-        {!loading &&
-          data?.getExpenses?.docs.map((expense) => (
-            <Card expense={expense} key={expense._id} />
-          ))}
-      </div>
-      {!loading && data?.getExpenses?.docs.length === 0 && (
-        <p className="flex items-center justify-center text-4xl font-bold text-center w-full">
-          Harajatlar mavjud emas
-        </p>
+
+      {/* Only show filters and pagination if there are expenses */}
+      {!hasNoExpenses && (
+        <>
+          <div className="flex justify-between mb-4">
+            <select
+              onChange={handleCategoryChange}
+              value={category}
+              className="border rounded p-2 text-black"
+            >
+              {expenceCategories.map((cat) => (
+                <option key={cat.value} value={cat.value}>
+                  {cat.label}
+                </option>
+              ))}
+            </select>
+            <select
+              onChange={handleLimitChange}
+              value={limit}
+              className="border rounded p-2 text-black"
+            >
+              <option value={1}>1</option>
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={50}>50</option>
+            </select>
+            <p className="text-lg">{page}-sahifa</p>
+          </div>
+
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-start mb-20">
+            {!loading &&
+              data?.getExpenses?.docs.map((expense) => (
+                <Card expense={expense} key={expense._id} />
+              ))}
+          </div>
+
+          <div className="flex justify-center items-center w-full mt-4 mb-4">
+            <button
+              onClick={handlePrevPage}
+              disabled={!data?.getExpenses?.hasPrevPage}
+              className="mx-2 hover:underline cursor-pointer"
+            >
+              Orqaga
+            </button>
+            <div className="flex items-center space-x-1 text-black">
+              {renderPageNumbers()}
+            </div>
+            <button
+              onClick={handleNextPage}
+              disabled={!data?.getExpenses?.hasNextPage}
+              className="mx-2 hover:underline cursor-pointer"
+            >
+              Oldinga
+            </button>
+          </div>
+        </>
       )}
-      <div className="flex justify-center items-center w-full mt-4 mb-4">
-        <button
-          onClick={handlePrevPage}
-          disabled={!data?.getExpenses?.hasPrevPage}
-          className="mx-2 hover:underline cursor-pointer"
-        >
-          Orqaga
-        </button>
-        <div className="flex items-center space-x-1 text-black">
-          {renderPageNumbers()}
+
+      {/* Show "no expenses" message when there are no expenses */}
+      {hasNoExpenses && (
+        <div className="flex items-center justify-center h-[40vh]">
+          <p className="text-4xl font-bold text-center">
+            Harajatlar mavjud emas
+          </p>
         </div>
-        <button
-          onClick={handleNextPage}
-          disabled={!data?.getExpenses?.hasNextPage}
-          className="mx-2 hover:underline cursor-pointer"
-        >
-          Oldinga
-        </button>
-      </div>
+      )}
+
+      {/* Show loading indicator */}
+      {loading && (
+        <div className="flex justify-center items-center h-[40vh]">
+          <div className="w-10 h-10 border-t-4 border-b-4 border-blue-500 rounded-full animate-spin"></div>
+        </div>
+      )}
     </div>
   );
 };
