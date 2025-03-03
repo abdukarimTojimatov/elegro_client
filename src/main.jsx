@@ -7,19 +7,14 @@ import GridBackground from "./components/ui/GridBackground.jsx";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 // Determine the GraphQL endpoint based on environment
-const isDevelopment = import.meta.env.DEV;
-const serverIP = "92.112.180.30"; // Your server IP address
-
-const graphqlURI = isDevelopment
-  ? "http://localhost:4000/graphql"
-  : `http://${serverIP}:4000/graphql`;
+const graphqlURI = import.meta.env.VITE_API_URL;
 
 console.log(`Using GraphQL endpoint: ${graphqlURI}`);
 
 const client = new ApolloClient({
   uri: graphqlURI,
-  cache: new InMemoryCache(), // Apollo Client uses to cache query results after fetching them.
-  credentials: "include", // This tells Apollo Client to send cookies along with every request to the server.
+  cache: new InMemoryCache(),
+  credentials: "include",
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
