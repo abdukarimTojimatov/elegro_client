@@ -26,7 +26,6 @@ const SharingForm = ({ toggleSharingForm }) => {
         variables: { input: sharingData },
         refetchQueries: ["GetSharings", "CategoryStatisticsSharing"],
       });
-
       form.reset();
       toast.success("Sharing created successfully");
       toggleSharingForm();
