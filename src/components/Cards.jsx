@@ -78,7 +78,7 @@ const Cards = () => {
             <select
               onChange={handleCategoryChange}
               value={category}
-              className="border rounded p-2 text-black"
+              className="border rounded p-2 text-black p-4"
             >
               {expenceCategories.map((cat) => (
                 <option key={cat.value} value={cat.value}>
@@ -89,7 +89,7 @@ const Cards = () => {
             <select
               onChange={handleLimitChange}
               value={limit}
-              className="border rounded p-2 text-black"
+              className="border rounded text-black"
             >
               <option value={1}>1</option>
               <option value={5}>5</option>

@@ -130,7 +130,7 @@ const HomePage = () => {
               </div> */}
 
               {/* Data Information Panel */}
-              <div className="w-full md:w-[360px] p-1 bg-gray-800/30 rounded-lg">
+              <div className="w-full md:w-[360px] p-1 bg-gray-600/20 rounded-lg">
                 <h3 className="text-xl font-bold text-white mb-4 text-center">
                   Xarajatlar ma'lumoti
                 </h3>
