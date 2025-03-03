@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client";
 import { CREATE_SHARING } from "../graphql/mutations/sharing.mutation";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-const SharingForm = () => {
+const SharingForm = ({ toggleSharingForm }) => {
   const navigate = useNavigate();
   const [createSharing, { loading }] = useMutation(CREATE_SHARING);
 
@@ -29,6 +29,7 @@ const SharingForm = () => {
 
       form.reset();
       toast.success("Sharing created successfully");
+      toggleSharingForm();
       navigate("/sharings");
     } catch (error) {
       toast.error(error.message);

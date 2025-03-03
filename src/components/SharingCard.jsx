@@ -22,7 +22,9 @@ const SharingCard = ({ sharing }) => {
     sharingDate,
     sharingPaymentType,
     sharingDescription,
+    userId,
   } = sharing;
+  console.log("userId", userId);
   const cardClass = categoryColorMap[sharingCategoryType];
   const [deleteSharing, { loading }] = useMutation(DELETE_SHARING);
 
@@ -38,7 +40,7 @@ const SharingCard = ({ sharing }) => {
     try {
       await deleteSharing({
         variables: { sharingId: sharing._id },
-        refetchQueries: ["GetSharings", "GetSharingsStatistics"],
+        refetchQueries: ["GetSharings", "CategoryStatisticsSharing"],
       });
       toast.success("Sharings deleted successfully");
     } catch (error) {
@@ -80,7 +82,10 @@ const SharingCard = ({ sharing }) => {
         </p>
 
         <div className="flex justify-between items-center">
-          <p className="text-xs text-black font-bold">{sharingDate}</p>
+          <span className="text-xs text-black font-bold">{sharingDate}</span>
+          <span className="text-xs text-black font-bold">
+            {userId?.username}
+          </span>
         </div>
       </div>
     </div>

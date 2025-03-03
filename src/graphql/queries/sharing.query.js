@@ -10,6 +10,10 @@ export const GET_SHARINGS = gql`
         sharingCategoryType
         sharingAmount
         sharingDate
+        userId {
+          _id
+          username
+        }
       }
       totalDocs
       limit
