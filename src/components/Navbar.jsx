@@ -1,5 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { LOGOUT } from "../graphql/mutations/user.mutation";
+import { useMutation, useQuery } from "@apollo/client";
+import { MdLogout } from "react-icons/md";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -7,7 +10,19 @@ const Navbar = () => {
   const handleNavigation = (path) => {
     navigate(path);
   };
+  const [logout, { loading, client }] = useMutation(LOGOUT);
 
+  const handleLogout = async () => {
+    try {
+      await logout({
+        refetchQueries: [{ query: GET_AUTHENTICATED_USER }],
+      });
+      client.resetStore();
+    } catch (error) {
+      console.error("Error logging out:", error);
+      toast.error(error.message);
+    }
+  };
   return (
     <div className="w-full mb-8">
       <nav className="relative">

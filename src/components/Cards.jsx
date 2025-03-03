@@ -3,6 +3,8 @@ import { useQuery } from "@apollo/client";
 import Card from "./Card";
 import { GET_EXPENSES } from "../graphql/queries/expense.query";
 import expenceCategories from "../constants/expenceCategories"; // Import categories
+import { MdNavigateNext } from "react-icons/md";
+import { GrFormPrevious } from "react-icons/gr";
 
 const Cards = () => {
   const [page, setPage] = useState(1);
@@ -66,11 +68,12 @@ const Cards = () => {
 
   return (
     <div className="w-full px-3 min-h-[40vh]">
-      <p className="text-3xl font-bold text-center my-10">Barcha harajatlar</p>
-
       {/* Only show filters and pagination if there are expenses */}
       {!hasNoExpenses && (
         <>
+          <p className="text-3xl font-bold text-center my-10">
+            Barcha harajatlar
+          </p>
           <div className="flex justify-between mb-4">
             <select
               onChange={handleCategoryChange}
@@ -95,21 +98,19 @@ const Cards = () => {
             </select>
             {/* <p className="text-lg">{page}-sahifa</p> */}
           </div>
-
           <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-start mb-20">
             {!loading &&
               data?.getExpenses?.docs.map((expense) => (
                 <Card expense={expense} key={expense._id} />
               ))}
           </div>
-
           <div className="flex justify-center items-center w-full mt-4 mb-4">
             <button
               onClick={handlePrevPage}
               disabled={!data?.getExpenses?.hasPrevPage}
               className="mx-2 hover:underline cursor-pointer"
             >
-              Orqaga
+              <GrFormPrevious />
             </button>
             <div className="flex items-center space-x-1 text-black">
               {renderPageNumbers()}
@@ -119,7 +120,7 @@ const Cards = () => {
               disabled={!data?.getExpenses?.hasNextPage}
               className="mx-2 hover:underline cursor-pointer"
             >
-              Oldinga
+              <MdNavigateNext />
             </button>
           </div>
         </>

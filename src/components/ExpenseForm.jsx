@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import expenceCategories from "../constants/expenceCategories"; // Import categories
 
 import { useNavigate } from "react-router-dom";
-const ExpenseForm = () => {
+const ExpenseForm = ({ toggleExpenseForm }) => {
   const navigate = useNavigate();
   const [createExpense, { loading }] = useMutation(CREATE_EXPENSE);
 
@@ -32,6 +32,7 @@ const ExpenseForm = () => {
       form.reset();
       toast.success("Expense created successfully");
       navigate("/");
+      toggleExpenseForm();
     } catch (error) {
       toast.error(error.message);
     }

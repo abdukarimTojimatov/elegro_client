@@ -122,22 +122,6 @@ const HomePage = () => {
   return (
     <>
       <div className="flex flex-col gap-6 items-center max-w-7xl mx-auto z-20 relative justify-center">
-        <div className="flex items-center">
-          <p className="md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gradient-to-r from-pink-600 via-indigo-500 to-pink-400 inline-block text-transparent bg-clip-text">
-            Har lahzani qadrlang
-          </p>
-          {!loading && (
-            <MdLogout
-              className="mx-2 w-5 h-5 cursor-pointer"
-              onClick={handleLogout}
-            />
-          )}
-          {/* loading spinner */}
-          {loading && (
-            <div className="w-6 h-6 border-t-2 border-b-2 mx-2 rounded-full animate-spin"></div>
-          )}
-        </div>
-
         <div className="flex flex-wrap w-full justify-center items-center gap-6">
           {data?.categoryStatisticsExpense?.length > 0 && (
             <div className="flex flex-col md:flex-row items-center justify-center gap-6 p-4 bg-gray-800/20 rounded-lg shadow-lg">
@@ -146,16 +130,17 @@ const HomePage = () => {
               </div> */}
 
               {/* Data Information Panel */}
-              <div className="w-full md:w-[360px] p-4 bg-gray-800/30 rounded-lg">
+              <div className="w-full md:w-[360px] p-1 bg-gray-800/30 rounded-lg">
                 <h3 className="text-xl font-bold text-white mb-4 text-center">
                   Xarajatlar ma'lumoti
                 </h3>
 
                 {/* Total Sum */}
-                <div className="mb-4 p-3 bg-gray-700/30 rounded-lg">
-                  <p className="text-white text-center font-bold">
-                    Jami: {totalSum.toLocaleString("uz-UZ")} so'm
-                  </p>
+                <div className="flex items-center justify-center mb-4 p-3 bg-gray-800/20 rounded-lg">
+                  <p className="text-white font-bold">Jami:</p>
+                  <span className="text-white font-medium pl-5">
+                    {totalSum.toLocaleString("uz-UZ")} so'm
+                  </span>
                 </div>
 
                 {/* Category List */}
@@ -163,7 +148,7 @@ const HomePage = () => {
                   {data?.categoryStatisticsExpense?.map((stat, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-2 rounded-lg bg-gray-700/20 hover:bg-gray-700/40 transition-colors"
+                      className="flex items-center justify-between p-2 rounded-lg bg-gray-800/20 hover:bg-gray-700/40 transition-colors"
                     >
                       <div className="flex items-center gap-2">
                         <div
@@ -195,16 +180,16 @@ const HomePage = () => {
               {/* Accordion Header */}
               <button
                 onClick={toggleExpenseForm}
-                className="w-full px-6 flex items-center border-blue-100 border-b justify-between text-white font-bold text-lg focus:outline-none transition-all duration-300"
+                className="w-auto px-6 flex items-center border-blue-100 border-collapse justify-between text-white font-bold text-lg transition-all duration-300"
               >
                 <span className="">
-                  {isExpenseFormOpen ? "Yopish" : "Yangi xarajat qo'shish"}
+                  {isExpenseFormOpen ? "Yopish" : "Yangi qo'shish"}
                 </span>
                 <span>
                   {isExpenseFormOpen ? (
                     <FiMinusCircle className="h-6 w-6" />
                   ) : (
-                    <FiPlusCircle className="h-6 w-6" />
+                    <FiPlusCircle className="h-6 w-6 pl-2" />
                   )}
                 </span>
               </button>
@@ -218,7 +203,7 @@ const HomePage = () => {
                 }`}
               >
                 <div className="p-6">
-                  <ExpenseForm />
+                  <ExpenseForm toggleExpenseForm={toggleExpenseForm} />
                 </div>
               </div>
             </div>
