@@ -30,36 +30,42 @@ const SharingCards = () => {
 
   return (
     <div className="w-full px-3 min-h-[40vh]">
-      <>
-        <p className="text-3xl font-bold text-center my-10">
-          Barcha taqsimotlar
+      {hasNoSharings ? (
+        <p className="flex items-center justify-center text-4xl font-bold text-center w-full min-h-[200px]">
+          Taqsimotlar mavjud emas
         </p>
+      ) : (
+        <>
+          <p className="text-3xl font-bold text-center my-10">
+            Barcha taqsimotlar
+          </p>
 
-        <Filters
-          categories={sharingCategories}
-          category={category}
-          onCategoryChange={handleCategoryChange}
-          limit={limit}
-          onLimitChange={handleLimitChange}
-        />
-
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-start mb-20">
-          {!loading &&
-            data?.getSharings?.docs.map((sharing) => (
-              <SharingCard sharing={sharing} key={sharing._id} />
-            ))}
-        </div>
-
-        {data?.getSharings?.docs && data?.getSharings?.docs.length > 0 && (
-          <Pagination
-            currentPage={page}
-            totalPages={data?.getSharings?.totalPages || 1}
-            hasPrevPage={data?.getSharings?.hasPrevPage}
-            hasNextPage={data?.getSharings?.hasNextPage}
-            onPageChange={setPage}
+          <Filters
+            categories={sharingCategories}
+            category={category}
+            onCategoryChange={handleCategoryChange}
+            limit={limit}
+            onLimitChange={handleLimitChange}
           />
-        )}
-      </>
+
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-start mb-20">
+            {!loading &&
+              data?.getSharings?.docs.map((sharing) => (
+                <SharingCard sharing={sharing} key={sharing._id} />
+              ))}
+          </div>
+
+          {data?.getSharings?.docs && data?.getSharings?.docs.length > 0 && (
+            <Pagination
+              currentPage={page}
+              totalPages={data?.getSharings?.totalPages || 1}
+              hasPrevPage={data?.getSharings?.hasPrevPage}
+              hasNextPage={data?.getSharings?.hasNextPage}
+              onPageChange={setPage}
+            />
+          )}
+        </>
+      )}
     </div>
   );
 };
