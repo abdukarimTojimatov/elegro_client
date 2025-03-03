@@ -3,7 +3,7 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-echo "Starting deployment in development mode..."
+echo "Starting deployment in production mode..."
 
 # Step 1: Pull the latest code
 echo "Pulling the latest changes from Git..."
@@ -21,17 +21,23 @@ if ! command -v vite &> /dev/null; then
   npm install -g vite
 fi
 
-# Step 4: Build the project (Optional if not used in dev mode)
-echo "Building the project..."
+# Step 4: Build the project for production
+echo "Building the project for production..."
 npm run build
 
-# Step 5: Start the project with PM2 in development mode
-echo "Starting the application with PM2 in development mode..."
+# Step 5: Start the project with PM2 in production mode
+echo "Starting the application with PM2 in production mode..."
 pm2 delete elegroClient || true  # Ensure old process is removed
-pm2 start "npm run dev" --name=elegroClient
+
+# Get the server IP address
+SERVER_IP=$(hostname -I | awk '{print $1}')
+echo "Server IP: $SERVER_IP"
+
+# Start serving the production build
+pm2 start "npx vite preview --host $SERVER_IP --port 3000" --name=elegroClient
 
 # Step 6: Synchronize PM2 process list
 echo "Saving PM2 process list..."
 pm2 save
 
-echo "Deployment complete! The application is now running in development mode."
+echo "Deployment complete! The application is now running in production mode at http://$SERVER_IP:3000"
