@@ -65,7 +65,7 @@ const Cards = () => {
     (!data?.getExpenses?.docs || data?.getExpenses?.docs.length === 0);
 
   return (
-    <div className="w-full px-10 min-h-[40vh]">
+    <div className="w-full px-3 min-h-[40vh]">
       <p className="text-3xl font-bold text-center my-10">Barcha harajatlar</p>
 
       {/* Only show filters and pagination if there are expenses */}
